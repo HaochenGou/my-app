@@ -9,8 +9,8 @@ export default function App() {
       <Text>Hello, World!</Text>
       <StatusBar style="auto" />
       <View style={styles.footerContainer}>
-        <Button label="Choose a photo" />
-        <Button label="Use this photo" />
+        <Button label="Input/Edit order" />
+        <Button label="Ready to deliver order" />
       </View>
     </View>
    
