@@ -6,11 +6,11 @@ import Button from './components/Button';
 export default function App() {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
       <View style={styles.footerContainer}>
         <Button label="Input/Edit order" />
         <Button label="Ready to deliver order" />
       </View>
+      <StatusBar style="auto" />
     </View>
    
   );
