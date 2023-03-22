@@ -12,8 +12,8 @@ const field = ({ label, theme }) => {
         <Text style={styles.label}>Input 1:</Text>
         <TextInput
           style={styles.input}
-          value={input1}
-          onChangeText={setInput1}
+          value={input}
+          onChangeText={setInput}
         />
       </View>
     </View>
