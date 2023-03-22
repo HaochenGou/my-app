@@ -1,11 +1,12 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function Button({ label, theme }) {
+export default function Button({ label, theme, direction }) {
   const navigation = useNavigation();
 
   if (theme === "input") {
