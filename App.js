@@ -5,11 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Button from './components/Button';
 
-function HomeScreen({ navigation }) {
+function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.footerContainer}>
-        <Button theme="input" label="Input Order" direction="Input"/>
+        <Button theme="input" label="Input Order" direction="Input Order"/>
         <Button theme="view" label="View/Edit Order" />
         <Button theme="paid" label="Paid Order" />
         <Button theme="delivered" label="Delivered Order/History" />
@@ -26,7 +26,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="Input" component={InputPage}/>
+        <Stack.Screen name="Input Order" component={InputPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

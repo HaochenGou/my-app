@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Pressable, Text, TextInput } from 'react-native';
 
 
-const field = ({ label, theme }) => {
+const Field = ({ label, theme }) => {
     const [input, setInput] = useState('');
 
     
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Input 1:</Text>
+        <Text style={styles.label}>{label}</Text>
         <TextInput
           style={styles.input}
           value={input}
