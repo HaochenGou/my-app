@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Pressable, Text, TextInput } from 'react-native';
 
 
-const Field = ({ label, theme }) => {
+const Field = ({ label}) => {
     const [input, setInput] = useState('');
 
     
   return (
-    <View style={styles.container}>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>{label}</Text>
         <TextInput
@@ -16,15 +15,10 @@ const Field = ({ label, theme }) => {
           onChangeText={setInput}
         />
       </View>
-    </View>
     );
 
 };
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-    },
     inputContainer: {
       marginBottom: 10,
     },
@@ -39,3 +33,5 @@ const styles = StyleSheet.create({
       borderRadius: 5,
     },
   });
+ 
+export default Field;
