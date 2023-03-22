@@ -29,6 +29,25 @@ export default function Button({ label, theme, direction }) {
     </View>
     );
   }
+
+  else if (theme === "inventory") {
+    return (
+      <View
+      style={[
+        styles.buttonContainer,
+        { borderWidth: 4, borderColor: '#ffd33d', borderRadius: 18 },
+      ]}>
+      <Pressable
+        style={[styles.button, { backgroundColor: '#fff' }]}
+        onPress={() => alert('You pressed a button.')}>
+        <MaterialIcons name="inventory" size={24} color="black" style={styles.buttonIcon} />
+        <Text style={[styles.buttonLabel, { color: '#25292e' }]}>{label}</Text>
+      </Pressable>
+    </View>
+    );
+  }
+
+
   else if (theme === "paid") {
     return (
       <View

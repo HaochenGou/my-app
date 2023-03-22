@@ -9,10 +9,11 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.footerContainer}>
-        <Button theme="input" label="Input Order" direction="Input Order"/>
+        <Button theme="input" label="Add New Order" direction="Input Order"/>
+        <Button theme="inventory" label="View/Edit Inventory" direction="Input Order"/>
         <Button theme="view" label="View/Edit Order" />
-        <Button theme="paid" label="Paid Order" />
-        <Button theme="delivered" label="Delivered Order/History" />
+        <Button theme="paid" label="View/Edit Paid Order" />
+        <Button theme="delivered" label="View/Edit Delivery History" />
       </View>
       <StatusBar style="auto" />
     </View>
