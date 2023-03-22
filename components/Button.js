@@ -1,10 +1,13 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Button({ label, theme }) {
+  const navigation = useNavigation();
+
   if (theme === "input") {
     return (
       <View
@@ -14,7 +17,7 @@ export default function Button({ label, theme }) {
       ]}>
       <Pressable
         style={[styles.button, { backgroundColor: '#fff' }]}
-        onPress={() => alert('You pressed a button.')}>
+        onPress={() => navigation.navigate('pages/Input')}>
         <Entypo name="add-to-list" size={24} color="black" style={styles.buttonIcon} />
         <Text style={[styles.buttonLabel, { color: '#25292e' }]}>{label}</Text>
       </Pressable>

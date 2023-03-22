@@ -4,9 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import Button from './components/Button';
 
 
-
-const PlaceholderImage = require('./assets/images/background-image.png');
-
 export default function App() {
   return (
     <View style={styles.container}>
