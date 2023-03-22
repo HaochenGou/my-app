@@ -8,6 +8,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Button({ label, theme, direction }) {
   const navigation = useNavigation();
+  const handlePress = () => {
+    navigation.navigate(direction);
+  };
+
 
   if (theme === "input") {
     return (
@@ -18,7 +22,7 @@ export default function Button({ label, theme, direction }) {
       ]}>
       <Pressable
         style={[styles.button, { backgroundColor: '#fff' }]}
-        onPress={() => navigation.navigate('pages/Input')}>
+        onPress={handlePress}>
         <Entypo name="add-to-list" size={24} color="black" style={styles.buttonIcon} />
         <Text style={[styles.buttonLabel, { color: '#25292e' }]}>{label}</Text>
       </Pressable>
