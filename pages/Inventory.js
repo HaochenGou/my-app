@@ -1,27 +1,31 @@
-import { StyleSheet, Text, TextInput, View, Button } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
-import { app } from '../firebase/firebase';
-import { getFirestore, doc, setDoc, updateDoc, getDocs, collection } from 'firebase/firestore';
+import { app } from "../firebase/firebase";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  updateDoc,
+  getDocs,
+  collection,
+} from "firebase/firestore";
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+const db = getFirestore(app);
 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const inventoryRef = firestore().collection('inventory');
-      const snapshot = await inventoryRef.get();
+      const inventoryRef = collection(db, "Inventory");
+      const snapshot = await getDocs(inventoryRef);
       let inventoryItems = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
         inventoryItems.push({
           id: doc.id,
-          alcoholName: data.alcoholName,
-          alcoholType: data.alcoholType,
-          alcoholQuantity: data.alcoholQuantity,
+          name: data.name,
+          quantity: data.quantity,
         });
       });
       setInventoryData(inventoryItems);
@@ -30,11 +34,10 @@ const Inventory = () => {
     fetchData();
   }, []);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Text style={styles.title}>{item.alcoholName}</Text>
-      <Text>Type: {item.alcoholType}</Text>
-      <Text>Quantity: {item.alcoholQuantity}</Text>
+      <Text style={styles.title}>{item.name}</Text>
+      <Text>Quantity: {item.quantity}</Text>
     </View>
   );
 
@@ -52,21 +55,19 @@ const Inventory = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     padding: 20,
   },
   item: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     padding: 20,
     marginBottom: 15,
     borderRadius: 5,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
 export default Inventory;
-
- 
