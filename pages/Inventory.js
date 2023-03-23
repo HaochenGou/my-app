@@ -17,20 +17,28 @@ const Inventory = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const inventoryRef = collection(db, "Inventory");
-      const snapshot = await getDocs(inventoryRef);
-      let inventoryItems = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        inventoryItems.push({
-          id: doc.id,
-          name: data.name,
-          quantity: data.quantity,
+      try {
+        const inventoryRef = collection(db, "Inventory");
+        const snapshot = await getDocs(inventoryRef);
+        if (snapshot.empty) {
+          console.log("No matching documents found.");
+          return;
+        }
+        let inventoryItems = [];
+        snapshot.forEach((doc) => {
+          console.log("Fetched data: ", doc.data());
+          const data = doc.data();
+          inventoryItems.push({
+            id: doc.id,
+            name: data.name,
+            quantity: data.quantity,
+          });
         });
-      });
-      setInventoryData(inventoryItems);
-    };
-
+        setInventoryData(inventoryItems);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };    
     fetchData();
   }, []);
 
