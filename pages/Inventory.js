@@ -34,22 +34,27 @@ const Inventory = () => {
     try {
       const inventoryRef = collection(db, "Inventory");
       const snapshot = await getDocs(inventoryRef);
+      if (snapshot.empty) {
+        console.log("No matching documents found.");
+        return;
+      }
       let inventoryItems = [];
       snapshot.forEach((doc) => {
+        console.log("Fetched data: ", doc.data());
         const data = doc.data();
         inventoryItems.push({
           id: doc.id,
-          name: data.name,
+          name: doc.id,
           quantity: data.quantity,
         });
       });
+      console.log("Fetched inventory items: ", inventoryItems); // Add this line
       setInventoryData(inventoryItems);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
-      setLoading(false);
     }
   };
+  
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
