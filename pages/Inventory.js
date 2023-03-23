@@ -1,46 +1,55 @@
-import { StyleSheet, Text, View, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import { app } from "../firebase/firebase";
 import {
+  getAuth,
+  onAuthStateChanged,
+} from "firebase/auth";
+import {
   getFirestore,
-  doc,
-  setDoc,
-  updateDoc,
-  getDocs,
   collection,
+  getDocs,
 } from "firebase/firestore";
 
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const inventoryRef = collection(db, "Inventory");
-        const snapshot = await getDocs(inventoryRef);
-        if (snapshot.empty) {
-          console.log("No matching documents found.");
-          return;
-        }
-        let inventoryItems = [];
-        snapshot.forEach((doc) => {
-          console.log("Fetched data: ", doc.data());
-          const data = doc.data();
-          inventoryItems.push({
-            id: doc.id,
-            name: data.name,
-            quantity: data.quantity,
-          });
-        });
-        setInventoryData(inventoryItems);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchData();
+      } else {
+        setLoading(false);
       }
-    };    
-    fetchData();
+    });
+
+    return () => unsubscribe();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const inventoryRef = collection(db, "Inventory");
+      const snapshot = await getDocs(inventoryRef);
+      let inventoryItems = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        inventoryItems.push({
+          id: doc.id,
+          name: data.name,
+          quantity: data.quantity,
+        });
+      });
+      setInventoryData(inventoryItems);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      setLoading(false);
+    }
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
@@ -48,6 +57,14 @@ const Inventory = () => {
       <Text>Quantity: {item.quantity}</Text>
     </View>
   );
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
