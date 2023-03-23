@@ -34,6 +34,7 @@ const Inventory = () => {
     try {
       const inventoryRef = collection(db, "Inventory");
       const snapshot = await getDocs(inventoryRef);
+      console.log('Snapshot:', snapshot);
       if (snapshot.empty) {
         console.log("No matching documents found.");
         return;
@@ -42,6 +43,7 @@ const Inventory = () => {
       snapshot.forEach((doc) => {
         console.log("Fetched data: ", doc.data());
         const data = doc.data();
+        console.log('Document data:', data);
         inventoryItems.push({
           id: doc.id,
           name: doc.id,
@@ -73,13 +75,18 @@ const Inventory = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={inventoryData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      {inventoryData.length > 0 ? (
+        <FlatList
+          data={inventoryData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <Text>No data available</Text>
+      )}
     </View>
   );
+  
 };
 
 const styles = StyleSheet.create({
