@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import InputPage from './pages/Input';
-import List from './pages/List';
+import Inventory from './pages/Inventory';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Button from './components/Button';
@@ -29,7 +29,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Input Order" component={InputPage}/>
-        <Stack.Screen name="Inventory" component={List}/>
+        <Stack.Screen name="Inventory" component={Inventory}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
