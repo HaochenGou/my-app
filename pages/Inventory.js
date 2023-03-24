@@ -4,6 +4,7 @@ import { app } from "../firebase/firebase";
 import {
   getAuth,
   onAuthStateChanged,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 import {
   getFirestore,
@@ -16,46 +17,55 @@ const db = getFirestore(app);
 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        fetchData();
-      } else {
-        setLoading(false);
-      }
-    });
 
-    return () => unsubscribe();
-  }, []);
+  const signIn = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      setUser(user);
+      console.log("User signed in:", user);
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
+  };
+  
 
+ 
   const fetchData = async () => {
     try {
       const inventoryRef = collection(db, "Inventory");
       const snapshot = await getDocs(inventoryRef);
-      console.log('Snapshot:', snapshot);
+     
       if (snapshot.empty) {
-        console.log("No matching documents found.");
         return;
       }
       let inventoryItems = [];
       snapshot.forEach((doc) => {
-        console.log("Fetched data: ", doc.data());
         const data = doc.data();
-        console.log('Document data:', data);
         inventoryItems.push({
           id: doc.id,
-          name: doc.id,
+          name: data.name,
           quantity: data.quantity,
         });
       });
-      console.log("Fetched inventory items: ", inventoryItems); // Add this line
       setInventoryData(inventoryItems);
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
   };
+
+  useEffect(() => {
+    signIn("haochen@hawkepro.com","68003725gk");
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
+
   
 
   const renderItem = ({ item }) => (
@@ -65,26 +75,15 @@ const Inventory = () => {
     </View>
   );
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
-      {inventoryData.length > 0 ? (
         <FlatList
           data={inventoryData}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
-      ) : (
-        <Text>No data available</Text>
-      )}
     </View>
+
   );
   
 };
