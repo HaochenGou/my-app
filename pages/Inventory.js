@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Modal,
+  Button,
+} from "react-native";
 import { app } from "../firebase/firebase";
 import {
   getAuth,
@@ -19,37 +28,40 @@ const db = getFirestore(app);
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [user, setUser] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
+  const [editedQuantity, setEditedQuantity] = useState('');
 
   const signIn = async (email, password) => {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      setUser(user);
-    
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    setUser(user);
   };
 
   const fetchData = async () => {
-      const inventoryRef = collection(db, "Inventory");
-      const snapshot = await getDocs(inventoryRef);
+    const inventoryRef = collection(db, "Inventory");
+    const snapshot = await getDocs(inventoryRef);
 
-      if (snapshot.empty) {
-        return;
-      }
-      let inventoryItems = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        inventoryItems.push({
-          id: doc.id,
-          name: data.name,
-          quantity: data.quantity,
-        });
+    if (snapshot.empty) {
+      return;
+    }
+    let inventoryItems = [];
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      inventoryItems.push({
+        id: doc.id,
+        name: data.name,
+        quantity: data.quantity,
       });
-      setInventoryData(inventoryItems);
+    });
+    setInventoryData(inventoryItems);
   };
 
   const updateQuantity = async (id, newQuantity) => {
     try {
       const itemRef = doc(db, "Inventory", id);
       await updateDoc(itemRef, { quantity: Number(newQuantity) });
+      fetchData();
     } catch (error) {
       console.error("Error updating quantity: ", error);
     }
@@ -65,22 +77,55 @@ const Inventory = () => {
     }
   }, [user]);
 
+  const openModal = (item) => {
+    setCurrentItem(item);
+    setEditedQuantity(String(item.quantity));
+    setModalVisible(true);
+  };
+
+  const handleSave = () => {
+    updateQuantity(currentItem.id, editedQuantity);
+    setModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
   const renderItem = ({ item }) => (
-    <View style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={() => openModal(item)}>
       <Text style={styles.title}>{item.name}</Text>
-      <TextInput
-        style={styles.quantityInput}
-        keyboardType="numeric"
-        value={String(item.quantity)}
-        onChangeText={(text) => {
-          updateQuantity(item.id, text);
-        }}
-      />
-    </View>
+      <Text>Quantity: {item.quantity}</Text>
+    </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>Edit Quantity</Text>
+            <TextInput
+              style={styles.modalQuantityInput}
+              keyboardType="numeric"
+              value={editedQuantity}
+              onChangeText={setEditedQuantity}
+              autoFocus
+            />
+            <View style={styles.modalButtons}>
+              <Button title="Save" onPress={handleSave} />
+              <Button title="Cancel" onPress={handleCancel} />
+            </View>
+          </View>
+        </View>
+      </Modal>
       <FlatList
         data={inventoryData}
         renderItem={renderItem}
@@ -106,14 +151,49 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  quantityInput: {
-    marginTop: 10,
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  modalQuantityInput: {
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 5,
     paddingHorizontal: 10,
-    fontSize: 16,
+    fontSize: 24,
+    width: "100%",
+    textAlign: "center",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+    width: "100%",
   },
 });
 
 export default Inventory;
+
