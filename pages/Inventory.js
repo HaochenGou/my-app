@@ -57,7 +57,7 @@ const Inventory = () => {
   };
 
   useEffect(() => {
-    signIn("haochen@hawkepro.com","68003725gk");
+    signIn("haochen@hawkepro.com","hawkeprohibition");
   }, []);
 
   useEffect(() => {
