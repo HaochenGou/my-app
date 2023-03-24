@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, TextInput } from "react-native";
 import { app } from "../firebase/firebase";
 import {
   getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import {
   getFirestore,
   collection,
   getDocs,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 
 const auth = getAuth(app);
@@ -19,25 +20,17 @@ const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [user, setUser] = useState(null);
 
-
   const signIn = async (email, password) => {
-    try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       setUser(user);
-      console.log("User signed in:", user);
-    } catch (error) {
-      console.error("Error signing in:", error);
-    }
+    
   };
-  
 
- 
   const fetchData = async () => {
-    try {
       const inventoryRef = collection(db, "Inventory");
       const snapshot = await getDocs(inventoryRef);
-     
+
       if (snapshot.empty) {
         return;
       }
@@ -51,13 +44,19 @@ const Inventory = () => {
         });
       });
       setInventoryData(inventoryItems);
+  };
+
+  const updateQuantity = async (id, newQuantity) => {
+    try {
+      const itemRef = doc(db, "Inventory", id);
+      await updateDoc(itemRef, { quantity: Number(newQuantity) });
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      console.error("Error updating quantity: ", error);
     }
   };
 
   useEffect(() => {
-    signIn("haochen@hawkepro.com","hawkeprohibition");
+    signIn("haochen@hawkepro.com", "hawkeprohibition");
   }, []);
 
   useEffect(() => {
@@ -66,26 +65,29 @@ const Inventory = () => {
     }
   }, [user]);
 
-  
-
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.title}>{item.name}</Text>
-      <Text>Quantity: {item.quantity}</Text>
+      <TextInput
+        style={styles.quantityInput}
+        keyboardType="numeric"
+        value={String(item.quantity)}
+        onChangeText={(text) => {
+          updateQuantity(item.id, text);
+        }}
+      />
     </View>
   );
 
   return (
     <View style={styles.container}>
-        <FlatList
-          data={inventoryData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
+      <FlatList
+        data={inventoryData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
-
   );
-  
 };
 
 const styles = StyleSheet.create({
@@ -103,6 +105,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  quantityInput: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    fontSize: 16,
   },
 });
 
