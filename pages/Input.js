@@ -42,9 +42,9 @@ const InputPage = ({navigation}) => {
 
   const saveOrder = async () => {
     try {
-      if (!orderAddress || !orderName || !orderLicense || !orderNumber || !orderDate) {
+      if (!orderAddress && !orderName && !orderLicense && !orderNumber && !orderDate) {
         // Show alert if any of the required fields are empty
-        alert("Please fill in all required fields");
+        alert("Can not save empty order.");
         return;
       }
   
@@ -82,6 +82,16 @@ const InputPage = ({navigation}) => {
       });
       }
       console.log("Alcohol orders saved in the sub-collection.");
+      alert("Order saved successfully!");
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            { name: 'Home' },
+            { name: 'Input Order' },
+          ],
+        })
+      );
 
     } catch (error) {
       console.error("Error saving order:", error);
