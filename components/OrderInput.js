@@ -239,9 +239,11 @@ signIn("haochen@hawkepro.com", "hawkeprohibition");
       <TouchableOpacity style={styles.button} onPress={saveOrder}>
       <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
+      {!docId && (
       <TouchableOpacity style={styles.button} onPress={resetOrder}>
         <Text style={styles.buttonText}>Reset</Text>
       </TouchableOpacity>
+        )}
     </View>
   </View>
   );
