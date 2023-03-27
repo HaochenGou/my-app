@@ -6,16 +6,17 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { CommonActions } from '@react-navigation/native';
 
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const InputPage = ({navigation}) => {
+const InputPage = ({ navigation }) => {
   const [orderAddress, setOrderAddress] = useState('');
   const [orderName, setOrderName] = useState('');
   const [orderLicense, setOrderLicense] = useState('');
   const [orderNumber, setOrderNumber] = useState('');
   const [orderDate, setOrderDate] = useState('');
+  const [isPaid, setIsPaid] = useState(false);
+  const [isDelivered, setIsDelivered] = useState(false);
   // Add alcohol quantities as state
   const [birdieJuiceQuantity, setBirdieJuiceQuantity] = useState(0);
   const [babyXVodkaQuantity, setBabyXVodkaQuantity] = useState(0);
@@ -43,22 +44,21 @@ const InputPage = ({navigation}) => {
   const saveOrder = async () => {
     try {
       if (!orderAddress && !orderName && !orderLicense && !orderNumber && !orderDate) {
-        // Show alert if any of the required fields are empty
-        alert("Can not save empty order.");
+        // Show alert if all required fields are empty
+        alert("Please fill in at least one field");
         return;
       }
-  
+
       const ordersRef = collection(db, "Orders");
       const docRef = await addDoc(ordersRef, {
-
         orderAddress: orderAddress,
         orderName: orderName,
         orderLicense: orderLicense,
         orderNumber: orderNumber,
         orderDate: orderDate,
+        isPaid: isPaid,
+        isDelivered: isDelivered,
       });
-      console.log("Order saved with ID:", docRef.id);
-
       const alcoholOrders = [
         { label: "Birdie Juice", quantity: birdieJuiceQuantity },
         { label: "Baby-X-Vodka", quantity: babyXVodkaQuantity },
@@ -73,16 +73,18 @@ const InputPage = ({navigation}) => {
         // Add other alcohols here
       ];
 
-      // Save alcohol orders in the sub-collection
       for (const alcoholOrder of alcoholOrders) {
         const alcoholRef = doc(docRef, "alcohol", alcoholOrder.label);
         await setDoc(alcoholRef, {
         label: alcoholOrder.label,
         quantity: alcoholOrder.quantity,
       });
-      }
-      console.log("Alcohol orders saved in the sub-collection.");
+    }
+
+      // Show success alert
       alert("Order saved successfully!");
+
+      // Return to the home page
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
@@ -92,94 +94,132 @@ const InputPage = ({navigation}) => {
           ],
         })
       );
-
     } catch (error) {
       console.error("Error saving order:", error);
     }
   };
 
-  const resetOrder = () => {
-      // Reset state values
-      setOrderAddress('');
-      setOrderName('');
-      setOrderLicense('');
-      setOrderNumber('');
-      setOrderDate('');
-      setBirdieJuiceQuantity(0);
-      setBabyXVodkaQuantity(0);
-      setLadySophiaQuantity(0);
-      setSugarLipsVodkaQuantity(0);
-      setSirPerwinkleGinQuantity(0);
-      setScoundrelRumbumQuantity(0);
-      setThickDirtySignatureCreamQuantity(0);
-      setThickDirtyRootBeerQuantity(0);
-      setThickDirtySaltedCaramelQuantity(0);
-      setWilliamLondonDryQuantity(0)
-      // Reset other alcohol quantities
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [
-            { name: 'Home' },
-            { name: 'Input Order' },
-          ],
-        })
-      );
-      
-    };
-
+  const resetOrder = () => {setOrderAddress('');
+  setOrderName('');
+  setOrderLicense('');
+  setOrderNumber('');
+  setOrderDate('');
+  setIsPaid(false);
+  setIsDelivered(false);
+  setBirdieJuiceQuantity(0);
+  setBabyXVodkaQuantity(0);
+  setLadySophiaQuantity(0);
+  setSugarLipsVodkaQuantity(0);
+  setSirPerwinkleGinQuantity(0);
+  setScoundrelRumbumQuantity(0);
+  setThickDirtySignatureCreamQuantity(0);
+  setThickDirtyRootBeerQuantity(0);
+  setThickDirtySaltedCaramelQuantity(0);
+  setWilliamLondonDryQuantity(0)
+  navigation.dispatch(
+    CommonActions.reset({
+      index: 1,
+      routes: [
+        { name: 'Home' },
+        { name: 'Input Order' },
+      ],
+    })
+  );
+  };
+  
   signIn("haochen@hawkepro.com", "hawkeprohibition");
-
+  
   return (
-    <View style={styles.container}>
-      <Field label="Order Address" onChangeText={setOrderAddress} />
-      <Field label="Order Name" onChangeText={setOrderName} />
-      <Field label="Order License" onChangeText={setOrderLicense} />
-      <Field label="Order number" onChangeText={setOrderNumber} />
-      <Field label="Order Date" onChangeText={setOrderDate} />
-      <Field label="Birdie Juice" onChangeText={setBirdieJuiceQuantity} isNumberInput/>
-      <Field label="Baby-X-Vodka" onChangeText={setBabyXVodkaQuantity} isNumberInput/>
-      <Field label="Lady Sophia" onChangeText={setLadySophiaQuantity} isNumberInput/>
-      <Field label="SugarLips Vodka" onChangeText={setSugarLipsVodkaQuantity} isNumberInput/>
-      <Field label="Sir Perwinkle Gin" onChangeText={setSirPerwinkleGinQuantity} isNumberInput/>
-      <Field label="Scoundrel Rumbum" onChangeText={setScoundrelRumbumQuantity} isNumberInput/>
-      <Field label="Thick & Dirty Signature Cream" onChangeText={setThickDirtySignatureCreamQuantity} isNumberInput/>
-      <Field label="Thick & Dirty Root Beer" onChangeText={setThickDirtyRootBeerQuantity} isNumberInput/>
-      <Field label="Thick & Dirty Salted Caramel" onChangeText={setThickDirtySaltedCaramelQuantity} isNumberInput/>
-      <Field label="William London Dry" onChangeText={setWilliamLondonDryQuantity} isNumberInput/>
-
-      {/* Add other alcohol fields here */}
-      {/* Add more alcohol fields as needed */}
+  <View style={styles.container}>
+    <Field label="Order Address" onChangeText={setOrderAddress} />
+    <Field label="Order Name" onChangeText={setOrderName} />
+    <Field label="Order License" onChangeText={setOrderLicense} />
+    <Field label="Order number" onChangeText={setOrderNumber} />
+    <Field label="Order Date" onChangeText={setOrderDate} />
+    <Field label="Birdie Juice" onChangeText={(text) => setBirdieJuiceQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="Baby-X-Vodka" onChangeText={(text) => setBabyXVodkaQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="Lady Sophia" onChangeText={(text) => setLadySophiaQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="SugarLips Vodka" onChangeText={(text) => setSugarLipsVodkaQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="Sir Perwinkle Gin" onChangeText={(text) => setSirPerwinkleGinQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="Scoundrel Rumbum" onChangeText={(text) => setScoundrelRumbumQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="Thick & Dirty Signature Cream" onChangeText={(text) => setThickDirtySignatureCreamQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="Thick & Dirty Root Beer" onChangeText={(text) => setThickDirtyRootBeerQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="Thick & Dirty Salted Caramel" onChangeText={(text) => setThickDirtySaltedCaramelQuantity(parseInt(text) || 0)} isNumberInput/>
+    <Field label="William London Dry" onChangeText={(text) => setWilliamLondonDryQuantity(parseInt(text) || 0)} isNumberInput/>
+    {/* Add other alcohol fields here */}
+    <View style={styles.rowContainer}>
+      <View style={styles.checkBoxContainer}>
+        <TouchableOpacity onPress={() => setIsPaid(!isPaid)} style={[styles.checkBox, isPaid && styles.checkedBox]}>
+        {isPaid && <Text style={styles.checkBoxText}>✓</Text>}
+        </TouchableOpacity>
+        <Text style={styles.checkBoxLabel}>Is Paid</Text>
+      </View>
+      <View style={styles.checkBoxContainer}>
+        <TouchableOpacity onPress={() => setIsDelivered(!isDelivered)} style={[styles.checkBox, isDelivered && styles.checkedBox]}>
+        {isDelivered && <Text style={styles.checkBoxText}>✓</Text>}
+        </TouchableOpacity>
+        <Text style={styles.checkBoxLabel}>Is Delivered</Text>
+      </View>
+    </View>
+    {/* Add other alcohol fields here /}
+    {/ Add more alcohol fields as needed */}
+    <View style={styles.rowContainer}>
       <TouchableOpacity style={styles.button} onPress={saveOrder}>
-        <Text style={styles.buttonText}>Save</Text>
+      <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.button} onPress={resetOrder}>
         <Text style={styles.buttonText}>Reset</Text>
       </TouchableOpacity>
     </View>
+  </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
+const styles = StyleSheet.create({container: {
+  flex: 1,
+  padding: 20,
+  },
+  rowContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  alignItems: 'center',
   },
   button: {
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    marginBottom: 10,
+  backgroundColor: '#007AFF',
+  padding: 10,
+  borderRadius: 5,
+  marginTop: 10,
+  marginBottom: 10,
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  color: '#FFFFFF',
+  fontSize: 16,
+  fontWeight: 'bold',
+  textAlign: 'center',
   },
-});
-
-export default InputPage;
-
+  checkBoxContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 10,
+  },
+  checkBox: {
+  width: 20,
+  height: 20,
+  borderWidth: 1,
+  borderColor: 'black',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginRight: 10,
+  },
+  checkedBox: {
+  backgroundColor: 'black',
+  },
+  checkBoxText: {
+  color: 'white',
+  },
+  checkBoxLabel: {
+  fontSize: 16,
+  },
+  });
+  
+  export default InputPage;

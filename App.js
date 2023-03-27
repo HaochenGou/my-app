@@ -12,7 +12,7 @@ function HomeScreen() {
       <View style={styles.footerContainer}>
         <Button theme="input" label="Add New Order" direction="Input Order"/>
         <Button theme="inventory" label="View/Edit Inventory" direction="Inventory"/>
-        <Button theme="view" label="View/Edit Order" />
+        <Button theme="view" label="View/Edit Unpaid Order" />
         <Button theme="paid" label="View/Edit Paid Order" />
         <Button theme="delivered" label="View/Edit Delivery History" />
       </View>
