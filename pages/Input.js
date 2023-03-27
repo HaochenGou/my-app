@@ -15,8 +15,17 @@ const InputPage = () => {
   const [orderNumber, setOrderNumber] = useState('');
   const [orderDate, setOrderDate] = useState('');
   // Add alcohol quantities as state
-  const [birdieJuiceQuantity, setBirdieJuiceQuantity] = useState('');
-  const [babyXVodkaQuantity, setBabyXVodkaQuantity] = useState('');
+  const [birdieJuiceQuantity, setBirdieJuiceQuantity] = useState(0);
+  const [babyXVodkaQuantity, setBabyXVodkaQuantity] = useState(0);
+  const [LadySophiaQuantity, setLadySophiaQuantity] = useState(0);
+  const [SugarLipsVodkaQuantity, setSugarLipsVodkaQuantity] = useState(0);
+  const [SirPerwinkleGinQuantity, setSirPerwinkleGinQuantity] = useState(0);
+  const [ScoundrelRumbumQuantity, setScoundrelRumbumQuantity] = useState(0);
+  const [ThickDirtySignatureCreamQuantity, setThickDirtySignatureCreamQuantity] = useState(0);
+  const [ThickDirtyRootBeerQuantity, setThickDirtyRootBeerQuantity] = useState(0);
+  const [ThickDirtySaltedCaramelQuantity, setThickDirtySaltedCaramelQuantity] = useState(0);
+  const [WilliamLondonDryQuantity, setWilliamLondonDryQuantity] = useState(0)
+
   // Add other alcohols here
 
   const signIn = async (email, password) => {
@@ -44,6 +53,14 @@ const InputPage = () => {
       const alcoholOrders = [
         { label: "Birdie Juice", quantity: birdieJuiceQuantity },
         { label: "Baby-X-Vodka", quantity: babyXVodkaQuantity },
+        { label: "Lady Sophia", quantity: LadySophiaQuantity},
+        { label: "SugarLips Vodka", quantity: SugarLipsVodkaQuantity},
+        { label: "Sir Perwinkle Gin", quantity: SirPerwinkleGinQuantity},
+        { label: "Scoundrel Rumbum", quantity: ScoundrelRumbumQuantity},
+        { label: "Thick & Dirty Signature Cream", quantity: ThickDirtySignatureCreamQuantity},
+        { label: "Thick & Dirty Root Beer", quantity: ThickDirtyRootBeerQuantity},
+        { label: "Thick & Dirty Salted Caramel", quantity: ThickDirtySaltedCaramelQuantity},
+        { label: "William London Dry", quantity: WilliamLondonDryQuantity}
         // Add other alcohols here
       ];
 
@@ -68,8 +85,16 @@ const InputPage = () => {
     setOrderLicense('');
     setOrderNumber('');
     setOrderDate('');
-    setBirdieJuiceQuantity('');
-    setBabyXVodkaQuantity('');
+    setBirdieJuiceQuantity(0);
+    setBabyXVodkaQuantity(0);
+    setLadySophiaQuantity(0);
+    setSugarLipsVodkaQuantity(0);
+    setSirPerwinkleGinQuantity(0);
+    setScoundrelRumbumQuantity(0);
+    setThickDirtySignatureCreamQuantity(0);
+    setThickDirtyRootBeerQuantity(0);
+    setThickDirtySaltedCaramelQuantity(0);
+    setWilliamLondonDryQuantity(0)
     // Reset other alcohol quantities
   };
 
@@ -82,8 +107,16 @@ const InputPage = () => {
       <Field label="Order License" onChangeText={setOrderLicense} />
       <Field label="Order number" onChangeText={setOrderNumber} />
       <Field label="Order Date" onChangeText={setOrderDate} isDateInput />
-      <Field label="Birdie Juice" onChangeText={setBirdieJuiceQuantity} />
-      <Field label="Baby-X-Vodka" onChangeText={setBabyXVodkaQuantity} />
+      <Field label="Birdie Juice" onChangeText={setBirdieJuiceQuantity} isNumberInput/>
+      <Field label="Baby-X-Vodka" onChangeText={setBabyXVodkaQuantity} isNumberInput/>
+      <Field label="Lady Sophia" onChangeText={setLadySophiaQuantity} isNumberInput/>
+      <Field label="SugarLips Vodka" onChangeText={setSugarLipsVodkaQuantity} isNumberInput/>
+      <Field label="Sir Perwinkle Gin" onChangeText={setSirPerwinkleGinQuantity} isNumberInput/>
+      <Field label="Scoundrel Rumbum" onChangeText={setScoundrelRumbumQuantity} isNumberInput/>
+      <Field label="Thick & Dirty Signature Cream" onChangeText={setThickDirtySignatureCreamQuantity} isNumberInput/>
+      <Field label="Thick & Dirty Root Beer" onChangeText={setThickDirtyRootBeerQuantity} isNumberInput/>
+      <Field label="Thick & Dirty Salted Caramel" onChangeText={setThickDirtySaltedCaramelQuantity} isNumberInput/>
+      <Field label="William London Dry" onChangeText={setWilliamLondonDryQuantity} isNumberInput/>
       
       {/* Add other alcohol fields here */}
       {/* Add more alcohol fields as needed */}

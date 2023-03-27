@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Pressable, Text, TextInput } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-const Field = ({ label, inputType }) => {
-  const [input, setInput] = useState('');
-
-  const keyboardType = inputType === 'quantity' or ===''? 'numeric' : 'default';
-
+const Field = ({ label, onChangeText, isDateInput, isNumberInput }) => {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={styles.input}
-        keyboardType={keyboardType}
-        value={input}
-        onChangeText={setInput}
+        onChangeText={onChangeText}
+        keyboardType={isDateInput ? 'default' : isNumberInput ? 'numeric' : 'default'}
       />
     </View>
   );
