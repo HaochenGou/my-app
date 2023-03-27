@@ -106,7 +106,6 @@ const InputPage = ({navigation}) => {
           routes: [
             { name: 'Home' },
             { name: 'Input Order' },
-            
           ],
         })
       );
