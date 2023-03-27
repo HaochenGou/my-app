@@ -57,6 +57,7 @@ const ViewPage = () => {
         orderAddress: selectedOrder.orderAddress,
         orderName: selectedOrder.orderName,
         orderLicense: selectedOrder.orderLicense,
+        orderDate: selectedOrder.orderDate,
         // Add other order fields here
       });
       setSelectedOrder(null);
@@ -76,7 +77,7 @@ const ViewPage = () => {
             style={styles.orderContainer}
             onPress={() => handleEditOrder(item)}
             >
-            <Text style={styles.orderText}>{item.orderName}</Text>
+            <Text style={styles.orderText}>{item.orderName} {item.orderDate}</Text>
             </TouchableOpacity>
     )}
 />
