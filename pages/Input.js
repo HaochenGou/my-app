@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import Field from '../components/Field';
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -134,8 +134,13 @@ const InputPage = ({navigation}) => {
 
       {/* Add other alcohol fields here */}
       {/* Add more alcohol fields as needed */}
-      <Button title="Save" onPress={saveOrder} />
-      <Button title="Reset" onPress={resetOrder} />
+      <TouchableOpacity style={styles.button} onPress={saveOrder}>
+        <Text style={styles.buttonText}>Save</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={resetOrder}>
+        <Text style={styles.buttonText}>Reset</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -144,6 +149,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  button: {
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

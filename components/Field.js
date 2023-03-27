@@ -6,7 +6,7 @@ const Field = ({ label, onChangeText, isNumberInput }) => {
     <View style={styles.inputContainer}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, isNumberInput && styles.numberInput]}
         onChangeText={onChangeText}
         keyboardType={isNumberInput ? 'numeric' : 'default'}
       />
@@ -16,17 +16,28 @@ const Field = ({ label, onChangeText, isNumberInput }) => {
 
 const styles = StyleSheet.create({
   inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
   },
   label: {
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginRight: 10,
+    fontSize: 16,
+    minWidth: 80,
   },
   input: {
+    flex: 1,
+    height: 40,
+    borderColor: '#CCCCCC',
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
     borderRadius: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    fontSize: 16,
+  },
+  numberInput: {
+    width: 80,
   },
 });
 
