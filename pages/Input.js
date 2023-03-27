@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, Platform } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import Field from '../components/Field';
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { CommonActions } from '@react-navigation/native';
+
 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const InputPage = () => {
+const InputPage = ({navigation}) => {
   const [orderAddress, setOrderAddress] = useState('');
   const [orderName, setOrderName] = useState('');
   const [orderLicense, setOrderLicense] = useState('');
@@ -66,7 +68,6 @@ const InputPage = () => {
       ];
 
       // Save alcohol orders in the sub-collection
-      // Save alcohol orders in the sub-collection
       for (const alcoholOrder of alcoholOrders) {
         const alcoholRef = doc(docRef, "alcohol", alcoholOrder.label);
         await setDoc(alcoholRef, {
@@ -82,9 +83,6 @@ const InputPage = () => {
   };
 
   const resetOrder = () => {
-    if (Platform.OS === 'web') {
-      window.location.reload();
-    } else {
       // Reset state values
       setOrderAddress('');
       setOrderName('');
@@ -102,8 +100,18 @@ const InputPage = () => {
       setThickDirtySaltedCaramelQuantity(0);
       setWilliamLondonDryQuantity(0)
       // Reset other alcohol quantities
-    }
-  };
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [
+            { name: 'Home' },
+            { name: 'Input Order' },
+            
+          ],
+        })
+      );
+      
+    };
 
   signIn("haochen@hawkepro.com", "hawkeprohibition");
 
