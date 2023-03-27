@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Platform } from 'react-native';
 import Field from '../components/Field';
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, setDoc } from "firebase/firestore";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -42,11 +42,12 @@ const InputPage = () => {
     try {
       const ordersRef = collection(db, "Orders");
       const docRef = await addDoc(ordersRef, {
+
         orderAddress: orderAddress,
         orderName: orderName,
         orderLicense: orderLicense,
         orderNumber: orderNumber,
-        orderDate: new Date(orderDate),
+        orderDate: orderDate,
       });
       console.log("Order saved with ID:", docRef.id);
 
@@ -65,37 +66,43 @@ const InputPage = () => {
       ];
 
       // Save alcohol orders in the sub-collection
+      // Save alcohol orders in the sub-collection
       for (const alcoholOrder of alcoholOrders) {
-        const alcoholRef = collection(docRef, "alcohol");
-        await addDoc(alcoholRef, {
-          label: alcoholOrder.label,
-          quantity: alcoholOrder.quantity,
-        });
+        const alcoholRef = doc(docRef, "alcohol", alcoholOrder.label);
+        await setDoc(alcoholRef, {
+        label: alcoholOrder.label,
+        quantity: alcoholOrder.quantity,
+      });
       }
       console.log("Alcohol orders saved in the sub-collection.");
+
     } catch (error) {
       console.error("Error saving order:", error);
     }
   };
 
-  const cancelOrder = () => {
-    // Reset state values
-    setOrderAddress('');
-    setOrderName('');
-    setOrderLicense('');
-    setOrderNumber('');
-    setOrderDate('');
-    setBirdieJuiceQuantity(0);
-    setBabyXVodkaQuantity(0);
-    setLadySophiaQuantity(0);
-    setSugarLipsVodkaQuantity(0);
-    setSirPerwinkleGinQuantity(0);
-    setScoundrelRumbumQuantity(0);
-    setThickDirtySignatureCreamQuantity(0);
-    setThickDirtyRootBeerQuantity(0);
-    setThickDirtySaltedCaramelQuantity(0);
-    setWilliamLondonDryQuantity(0)
-    // Reset other alcohol quantities
+  const resetOrder = () => {
+    if (Platform.OS === 'web') {
+      window.location.reload();
+    } else {
+      // Reset state values
+      setOrderAddress('');
+      setOrderName('');
+      setOrderLicense('');
+      setOrderNumber('');
+      setOrderDate('');
+      setBirdieJuiceQuantity(0);
+      setBabyXVodkaQuantity(0);
+      setLadySophiaQuantity(0);
+      setSugarLipsVodkaQuantity(0);
+      setSirPerwinkleGinQuantity(0);
+      setScoundrelRumbumQuantity(0);
+      setThickDirtySignatureCreamQuantity(0);
+      setThickDirtyRootBeerQuantity(0);
+      setThickDirtySaltedCaramelQuantity(0);
+      setWilliamLondonDryQuantity(0)
+      // Reset other alcohol quantities
+    }
   };
 
   signIn("haochen@hawkepro.com", "hawkeprohibition");
@@ -121,7 +128,7 @@ const InputPage = () => {
       {/* Add other alcohol fields here */}
       {/* Add more alcohol fields as needed */}
       <Button title="Save" onPress={saveOrder} />
-      <Button title="Cancel" onPress={cancelOrder} />
+      <Button title="Reset" onPress={resetOrder} />
     </View>
   );
 };
