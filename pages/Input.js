@@ -42,6 +42,12 @@ const InputPage = ({navigation}) => {
 
   const saveOrder = async () => {
     try {
+      if (!orderAddress || !orderName || !orderLicense || !orderNumber || !orderDate) {
+        // Show alert if any of the required fields are empty
+        alert("Please fill in all required fields");
+        return;
+      }
+  
       const ordersRef = collection(db, "Orders");
       const docRef = await addDoc(ordersRef, {
 
