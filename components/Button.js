@@ -74,7 +74,7 @@ export default function Button({ label, theme, direction }) {
       ]}>
       <Pressable
         style={[styles.button, { backgroundColor: '#fff' }]}
-        onPress={() => alert('You pressed a button.')}>
+        onPress={handlePress}>
        <Ionicons name="file-tray-full-outline" size={24} color="black" style={styles.buttonIcon} />
         <Text style={[styles.buttonLabel, { color: '#25292e' }]}>{label}</Text>
       </Pressable>

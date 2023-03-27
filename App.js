@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import InputPage from './pages/Input';
 import Inventory from './pages/Inventory';
+import ViewPage from './pages/View';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Button from './components/Button';
@@ -12,7 +13,7 @@ function HomeScreen() {
       <View style={styles.footerContainer}>
         <Button theme="input" label="Add New Order" direction="Input Order"/>
         <Button theme="inventory" label="View/Edit Inventory" direction="Inventory"/>
-        <Button theme="view" label="View/Edit Unpaid Order" />
+        <Button theme="view" label="View/Edit Unpaid Order" direction="View Order"/>
         <Button theme="paid" label="View/Edit Paid Order" />
         <Button theme="delivered" label="View/Edit Delivery History" />
       </View>
@@ -30,6 +31,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Input Order" component={InputPage}/>
         <Stack.Screen name="Inventory" component={Inventory}/>
+        <Stack.Screen name="View Order" component={ViewPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
