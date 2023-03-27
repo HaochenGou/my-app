@@ -66,7 +66,7 @@ const InputPage = () => {
 
       // Save alcohol orders in the sub-collection
       for (const alcoholOrder of alcoholOrders) {
-        const alcoholRef = collection(docRef, "Alcohol");
+        const alcoholRef = collection(docRef, "alcohol");
         await addDoc(alcoholRef, {
           label: alcoholOrder.label,
           quantity: alcoholOrder.quantity,
@@ -106,7 +106,7 @@ const InputPage = () => {
       <Field label="Order Name" onChangeText={setOrderName} />
       <Field label="Order License" onChangeText={setOrderLicense} />
       <Field label="Order number" onChangeText={setOrderNumber} />
-      <Field label="Order Date" onChangeText={setOrderDate} isDateInput />
+      <Field label="Order Date" onChangeText={setOrderDate} />
       <Field label="Birdie Juice" onChangeText={setBirdieJuiceQuantity} isNumberInput/>
       <Field label="Baby-X-Vodka" onChangeText={setBabyXVodkaQuantity} isNumberInput/>
       <Field label="Lady Sophia" onChangeText={setLadySophiaQuantity} isNumberInput/>
@@ -117,7 +117,7 @@ const InputPage = () => {
       <Field label="Thick & Dirty Root Beer" onChangeText={setThickDirtyRootBeerQuantity} isNumberInput/>
       <Field label="Thick & Dirty Salted Caramel" onChangeText={setThickDirtySaltedCaramelQuantity} isNumberInput/>
       <Field label="William London Dry" onChangeText={setWilliamLondonDryQuantity} isNumberInput/>
-      
+
       {/* Add other alcohol fields here */}
       {/* Add more alcohol fields as needed */}
       <Button title="Save" onPress={saveOrder} />
