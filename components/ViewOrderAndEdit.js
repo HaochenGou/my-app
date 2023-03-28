@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   View,
   Text,
@@ -7,7 +6,6 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
-  CheckBox,
 } from "react-native";
 import {
   getFirestore,
@@ -212,18 +210,36 @@ const ViewOrderAndEdit = ({ direction }) => {
                 </View>
               </Modal>
               <View style={styles.rowContainer}>
-                <Text style={styles.label}>Is Paid:</Text>
-                <CheckBox
-                  value={selectedOrder.isPaid}
-                  onValueChange={updatePaidStatus}
-                />
-              </View>
-              <View style={styles.rowContainer}>
-                <Text style={styles.label}>Is Delivered:</Text>
-                <CheckBox
-                  value={selectedOrder.isDelivered}
-                  onValueChange={updateDeliveredStatus}
-                />
+                <View style={styles.checkBoxContainer}>
+                  <TouchableOpacity
+                    onPress={() => updatePaidStatus(!selectedOrder.isPaid)}
+                    style={[
+                      styles.checkBox,
+                      selectedOrder.isPaid && styles.checkedBox,
+                    ]}
+                  >
+                    {selectedOrder.isPaid && (
+                      <Text style={styles.checkBoxText}>✓</Text>
+                    )}
+                  </TouchableOpacity>
+                  <Text style={styles.checkBoxLabel}>Is Paid</Text>
+                </View>
+                <View style={styles.checkBoxContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      updateDeliveredStatus(!selectedOrder.isDelivered)
+                    }
+                    style={[
+                      styles.checkBox,
+                      selectedOrder.isDelivered && styles.checkedBox,
+                    ]}
+                  >
+                    {selectedOrder.isDelivered && (
+                      <Text style={styles.checkBoxText}>✓</Text>
+                    )}
+                  </TouchableOpacity>
+                  <Text style={styles.checkBoxLabel}>Is Delivered</Text>
+                </View>
               </View>
               <TouchableOpacity
                 style={styles.deleteButton}
@@ -287,6 +303,29 @@ const styles = StyleSheet.create({
   modalContent: {
     flex: 1,
     padding: 20,
+  },
+  checkBoxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  checkBox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: "black",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  checkedBox: {
+    backgroundColor: "black",
+  },
+  checkBoxText: {
+    color: "white",
+  },
+  checkBoxLabel: {
+    fontSize: 16,
   },
   label: {
     fontWeight: "bold",
