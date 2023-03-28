@@ -213,9 +213,18 @@ const ViewOrderAndEdit = ({ direction }) => {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
+        {direction == "Unpaid" && (
         <Text style={styles.headerText}>
-          Total This Screen Alcohol Quantities
-        </Text>
+          Total Unpaid Alcohol Quantities
+        </Text>)}
+        {direction == "Paid" && (
+        <Text style={styles.headerText}>
+          Total not delivered Alcohol Quantities
+        </Text>)}
+        {direction == "Delivered" && (
+        <Text style={styles.headerText}>
+          Total Delivered Alcohol Quantities
+        </Text>)}
         {Object.entries(alcoholTotalQuantities).map(([label, quantity]) => (
           <View style={styles.alcoholQuantityContainer} key={label}>
             <Text style={styles.alcoholLabel}>{label}:</Text>
