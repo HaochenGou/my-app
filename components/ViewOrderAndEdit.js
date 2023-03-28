@@ -156,124 +156,143 @@ const ViewOrderAndEdit = ({ direction }) => {
 
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
-      <ScrollView>
-        <View style={styles.container}>
-          <FlatList
-            data={unpaidOrders}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.orderContainer}
-                onPress={() => handleShowOrderDetails(item)}
-              >
-                <Text style={styles.orderText}>
-                  {item.orderName} {item.orderDate}
-                </Text>
-              </TouchableOpacity>
-            )}
-          />
+      <View style={styles.container}>
+        <FlatList
+          data={unpaidOrders}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.orderContainer}
+              onPress={() => handleShowOrderDetails(item)}
+            >
+              <Text style={styles.orderText}>
+                {item.orderName} {item.orderDate}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
 
-          <Modal visible={!!selectedOrder} animationType="slide">
-            <View style={styles.modalContent}>
-              {selectedOrder && (
-                <>
-                  <Text style={styles.label}>Order Address:</Text>
-                  <Text style={styles.value}>{selectedOrder.orderAddress}</Text>
-                  <Text style={styles.label}>Order Name:</Text>
-                  <Text style={styles.value}>{selectedOrder.orderName}</Text>
-                  <Text style={styles.label}>Order Number:</Text>
-                  <Text style={styles.value}>{selectedOrder.orderNumber}</Text>
-                  <Text style={styles.label}>Order Date:</Text>
-                  <Text style={styles.value}>{selectedOrder.orderDate}</Text>
-                  <Text style={styles.label}>Order License:</Text>
-                  <Text style={styles.value}>{selectedOrder.orderLicense}</Text>
-                  <Text style={styles.label}>Alcohol Order:</Text>
-                  <View>
-                    {alcoholItems.map((item) => (
-                      <Text key={item.id} style={styles.alcoholItem}>
-                        {item.label}: {item.quantity}
-                      </Text>
-                    ))}
-                  </View>
-                  <Modal visible={dialogVisible} onRequestClose={handleCancel}>
-                    <View style={styles.modalContent}>
-                      <h2>Are you sure?</h2>
-                      <p>Do you want to delete this order?</p>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={handleConfirm}
-                      >
-                        <Text style={styles.deleteButtonText}>YES</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.deleteButton}
-                        onPress={handleCancel}
-                      >
-                        <Text style={styles.deleteButtonText}>NO</Text>
-                      </TouchableOpacity>
+        <Modal visible={!!selectedOrder} animationType="slide">
+          <SafeAreaView style={styles.modalSafeArea}>
+            <ScrollView>
+              <View style={styles.modalContent}>
+                {selectedOrder && (
+                  <>
+                    <Text style={styles.label}>Order Address:</Text>
+                    <Text style={styles.value}>
+                      {selectedOrder.orderAddress}
+                    </Text>
+                    <Text style={styles.label}>Order Name:</Text>
+                    <Text style={styles.value}>{selectedOrder.orderName}</Text>
+                    <Text style={styles.label}>Order Number:</Text>
+                    <Text style={styles.value}>
+                      {selectedOrder.orderNumber}
+                    </Text>
+                    <Text style={styles.label}>Order Date:</Text>
+                    <Text style={styles.value}>{selectedOrder.orderDate}</Text>
+                    <Text style={styles.label}>Order License:</Text>
+                    <Text style={styles.value}>
+                      {selectedOrder.orderLicense}
+                    </Text>
+                    <Text style={styles.label}>Alcohol Order:</Text>
+                    <View>
+                      {alcoholItems.map((item) => (
+                        <Text key={item.id} style={styles.alcoholItem}>
+                          {item.label}: {item.quantity}
+                        </Text>
+                      ))}
                     </View>
-                  </Modal>
-                  <View style={styles.rowContainer}>
-                    <View style={styles.checkBoxContainer}>
-                      <TouchableOpacity
-                        onPress={() => updatePaidStatus(!selectedOrder.isPaid)}
-                        style={[
-                          styles.checkBox,
-                          selectedOrder.isPaid && styles.checkedBox,
-                        ]}
-                      >
-                        {selectedOrder.isPaid && (
-                          <Text style={styles.checkBoxText}>✓</Text>
-                        )}
-                      </TouchableOpacity>
-                      <Text style={styles.checkBoxLabel}>Is Paid</Text>
+                    <Modal
+                      visible={dialogVisible}
+                      onRequestClose={handleCancel}
+                      animationType="slide"
+                    >
+                      <SafeAreaView style={styles.modalContent}>
+                        <Text style={styles.dialogTitle}>Are you sure?</Text>
+                        <Text style={styles.dialogText}>
+                          Do you want to delete this order?
+                        </Text>
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={handleConfirm}
+                        >
+                          <Text style={styles.deleteButtonText}>YES</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.deleteButton}
+                          onPress={handleCancel}
+                        >
+                          <Text style={styles.deleteButtonText}>NO</Text>
+                        </TouchableOpacity>
+                      </SafeAreaView>
+                    </Modal>
+                    <View style={styles.rowContainer}>
+                      <View style={styles.checkBoxContainer}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            updatePaidStatus(!selectedOrder.isPaid)
+                          }
+                          style={[
+                            styles.checkBox,
+                            selectedOrder.isPaid && styles.checkedBox,
+                          ]}
+                        >
+                          {selectedOrder.isPaid && (
+                            <Text style={styles.checkBoxText}>✓</Text>
+                          )}
+                        </TouchableOpacity>
+                        <Text style={styles.checkBoxLabel}>Is Paid</Text>
+                      </View>
+                      <View style={styles.checkBoxContainer}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            updateDeliveredStatus(!selectedOrder.isDelivered)
+                          }
+                          style={[
+                            styles.checkBox,
+                            selectedOrder.isDelivered && styles.checkedBox,
+                          ]}
+                        >
+                          {selectedOrder.isDelivered && (
+                            <Text style={styles.checkBoxText}>✓</Text>
+                          )}
+                        </TouchableOpacity>
+                        <Text style={styles.checkBoxLabel}>Is Delivered</Text>
+                      </View>
                     </View>
-                    <View style={styles.checkBoxContainer}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          updateDeliveredStatus(!selectedOrder.isDelivered)
-                        }
-                        style={[
-                          styles.checkBox,
-                          selectedOrder.isDelivered && styles.checkedBox,
-                        ]}
-                      >
-                        {selectedOrder.isDelivered && (
-                          <Text style={styles.checkBoxText}>✓</Text>
-                        )}
-                      </TouchableOpacity>
-                      <Text style={styles.checkBoxLabel}>Is Delivered</Text>
-                    </View>
-                  </View>
-                  <TouchableOpacity
-                    style={styles.deleteButton}
-                    onPress={showDialog}
-                  >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.deleteButton}
+                      onPress={showDialog}
+                    >
+                      <Text style={styles.deleteButtonText}>Delete</Text>
+                    </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.button} onPress={saveOrder}>
-                    <Text style={styles.buttonText}>Save</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={saveOrder}>
+                      <Text style={styles.buttonText}>Save</Text>
+                    </TouchableOpacity>
 
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => setSelectedOrder(null)}
-                  >
-                    <Text style={styles.buttonText}>Close</Text>
-                  </TouchableOpacity>
-                </>
-              )}
-            </View>
-          </Modal>
-        </View>
-      </ScrollView>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => setSelectedOrder(null)}
+                    >
+                      <Text style={styles.buttonText}>Close</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   safeAreaContainer: {
+    flex: 1,
+  },
+  modalSafeArea: {
     flex: 1,
   },
   container: {
@@ -287,6 +306,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderColor: "#ddd",
     borderWidth: 1,
+  },
+  dialogTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  dialogText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 20,
   },
   rowContainer: {
     flexDirection: "row",
