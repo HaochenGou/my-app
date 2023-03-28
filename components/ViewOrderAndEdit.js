@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   View,
   Text,
@@ -17,6 +18,7 @@ import {
   doc,
   getDoc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -28,6 +30,7 @@ const ViewOrderAndEdit = ({ direction }) => {
   const [unpaidOrders, setUnpaidOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [alcoholItems, setAlcoholItems] = useState([]);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const signIn = async (email, password) => {
     try {
@@ -79,14 +82,48 @@ const ViewOrderAndEdit = ({ direction }) => {
     setSelectedOrder({ ...selectedOrder, isPaid: value });
   };
 
+  const updateDeliveredStatus = (value) => {
+    setSelectedOrder({ ...selectedOrder, isDelivered: value });
+  };
+
   const saveOrder = async () => {
     try {
       const orderRef = doc(db, "Orders", selectedOrder.id);
-      await updateDoc(orderRef, { isPaid: selectedOrder.isPaid });
+      await updateDoc(orderRef, {
+        isPaid: selectedOrder.isPaid,
+        isDelivered: selectedOrder.isDelivered,
+      });
       alert("Order updated successfully!");
       setSelectedOrder(null);
     } catch (error) {
       console.error("Error updating order:", error);
+    }
+  };
+
+  const showDialog = () => {
+    setDialogVisible(true);
+  };
+
+  const handleCancel = () => {
+    setDialogVisible(false);
+  };
+
+  const handleConfirm = async () => {
+    try {
+      // Delete the order from the database
+      const orderRef = doc(db, "Orders", selectedOrder.id);
+      await deleteDoc(orderRef);
+
+      // Close the dialog
+      setDialogVisible(false);
+
+      // Close the modal
+      setSelectedOrder(null);
+
+      // Refresh the orders list
+      fetchUnpaidOrders();
+    } catch (error) {
+      console.error("Error deleting order:", error);
     }
   };
 
@@ -156,6 +193,24 @@ const ViewOrderAndEdit = ({ direction }) => {
                   </Text>
                 ))}
               </View>
+              <Modal visible={dialogVisible} onRequestClose={handleCancel}>
+                <View style={styles.modalContent}>
+                  <h2>Are you sure?</h2>
+                  <p>Do you want to delete this order?</p>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleConfirm}
+                  >
+                    <Text style={styles.deleteButtonText}>YES</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={handleCancel}
+                  >
+                    <Text style={styles.deleteButtonText}>NO</Text>
+                  </TouchableOpacity>
+                </View>
+              </Modal>
               <View style={styles.rowContainer}>
                 <Text style={styles.label}>Is Paid:</Text>
                 <CheckBox
@@ -163,6 +218,20 @@ const ViewOrderAndEdit = ({ direction }) => {
                   onValueChange={updatePaidStatus}
                 />
               </View>
+              <View style={styles.rowContainer}>
+                <Text style={styles.label}>Is Delivered:</Text>
+                <CheckBox
+                  value={selectedOrder.isDelivered}
+                  onValueChange={updateDeliveredStatus}
+                />
+              </View>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={showDialog}
+              >
+                <Text style={styles.deleteButtonText}>Delete</Text>
+              </TouchableOpacity>
+
               <TouchableOpacity style={styles.button} onPress={saveOrder}>
                 <Text style={styles.buttonText}>Save</Text>
               </TouchableOpacity>
@@ -198,6 +267,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  deleteButton: {
+    backgroundColor: "#FF0000",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  deleteButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   orderText: {
     fontSize: 18,

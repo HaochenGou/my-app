@@ -4,7 +4,7 @@ import InputPage from './pages/Input';
 import Inventory from './pages/Inventory';
 import ViewPage from './pages/View';
 import PaidPage from './pages/Paid';
-import DeliveredPage from './pages/Delivery';
+import DeliveryPage from './pages/Delivery';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Button from './components/Button';
@@ -35,7 +35,7 @@ export default function App() {
         <Stack.Screen name="Inventory" component={Inventory}/>
         <Stack.Screen name="View Order" component={ViewPage}/>
         <Stack.Screen name="Paid Order" component={PaidPage}/>
-        <Stack.Screen name="Delivered Order" component={DeliveredPage}/>
+        <Stack.Screen name="Delivered Order" component={DeliveryPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
