@@ -1,10 +1,10 @@
 import React from 'react';
 import ViewOrderAndEdit from '../components/ViewOrderAndEdit';
 
-const ViewPage = () => {
+const PaidPage = () => {
   return (
-    <ViewOrderAndEdit direction="Unpaid"/>
+    <ViewOrderAndEdit direction="Paid"/>
   );
 };
 
-export default ViewPage;
+export default PaidPage;

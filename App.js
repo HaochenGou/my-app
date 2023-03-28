@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import InputPage from './pages/Input';
 import Inventory from './pages/Inventory';
 import ViewPage from './pages/View';
+import PaidPage from './pages/Paid';
+import DeliveredPage from './pages/Delivery';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Button from './components/Button';
@@ -14,8 +16,8 @@ function HomeScreen() {
         <Button theme="input" label="Add New Order" direction="Input Order"/>
         <Button theme="inventory" label="View/Edit Inventory" direction="Inventory"/>
         <Button theme="view" label="View/Edit Unpaid Order" direction="View Order"/>
-        <Button theme="paid" label="View/Edit Paid Order" />
-        <Button theme="delivered" label="View/Edit Delivery History" />
+        <Button theme="paid" label="View/Edit Paid Order" direction="Paid Order"/>
+        <Button theme="delivered" label="View/Edit Delivery History" direction="Delivered Order"/>
       </View>
       <StatusBar style="auto" />
     </View>
@@ -32,6 +34,8 @@ export default function App() {
         <Stack.Screen name="Input Order" component={InputPage}/>
         <Stack.Screen name="Inventory" component={Inventory}/>
         <Stack.Screen name="View Order" component={ViewPage}/>
+        <Stack.Screen name="Paid Order" component={PaidPage}/>
+        <Stack.Screen name="Delivered Order" component={DeliveredPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
