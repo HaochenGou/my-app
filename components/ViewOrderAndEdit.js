@@ -26,7 +26,18 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+const initialAlcoholTotalQuantities = {
+  "Birdie Juice": 0,
+  "Baby-X-Vodka": 0,
+  "Lady Sophia": 0,
+  "SugarLips Vodka": 0,
+  "Sir Perwinkle Gin": 0,
+  "Scoundrel Rumbum": 0,
+  "Thick & Dirty Signature Cream": 0,
+  "Thick & Dirty Root Beer": 0,
+  "Thick & Dirty Salted Caramel": 0,
+  "William London Dry": 0,
+};
 
 const ViewOrderAndEdit = ({ direction }) => {
   const [unpaidOrders, setUnpaidOrders] = useState([]);
@@ -34,7 +45,9 @@ const ViewOrderAndEdit = ({ direction }) => {
   const [alcoholItems, setAlcoholItems] = useState([]);
   const [dialogVisible, setDialogVisible] = useState(false);
   const navigation = useNavigation();
-
+  const [alcoholTotalQuantities, setAlcoholTotalQuantities] = useState(
+    initialAlcoholTotalQuantities
+  );
 
   const signIn = async (email, password) => {
     try {
@@ -74,14 +87,49 @@ const ViewOrderAndEdit = ({ direction }) => {
       }
       const querySnapshot = await getDocs(q);
       const orders = [];
-      querySnapshot.forEach((doc) => {
-        orders.push({ ...doc.data(), id: doc.id });
-      });
+      for (const doc of querySnapshot.docs) {
+        const alcoholSnapshot = await getDocs(collection(doc.ref, "alcohol"));
+        const alcoholItems = alcoholSnapshot.docs.map((alcoholDoc) => ({
+          ...alcoholDoc.data(),
+          id: alcoholDoc.id,
+        }));
+        orders.push({ ...doc.data(), id: doc.id, alcoholItems });
+      }
       setUnpaidOrders(orders);
+      sumAlcoholQuantities(orders);
     } catch (error) {
       console.error("Error fetching unpaid orders:", error);
     }
   };
+
+  const sumAlcoholQuantities = (unpaidOrders) => {
+    const alcoholLabels = [
+      "Birdie Juice",
+      "Baby-X-Vodka",
+      "Lady Sophia",
+      "SugarLips Vodka",
+      "Sir Perwinkle Gin",
+      "Scoundrel Rumbum",
+      "Thick & Dirty Signature Cream",
+      "Thick & Dirty Root Beer",
+      "Thick & Dirty Salted Caramel",
+      "William London Dry",
+    ];
+    const totalQuantities = alcoholLabels.reduce((acc, label) => {
+      acc[label] = 0;
+      return acc;
+    }, {});
+
+    unpaidOrders.forEach((order) => {
+      order.alcoholItems.forEach((item) => {
+        if (totalQuantities[item.label] !== undefined) {
+          totalQuantities[item.label] += item.quantity;
+        }
+      });
+    });
+    setAlcoholTotalQuantities(totalQuantities);
+  };
+
   const updatePaidStatus = (value) => {
     setSelectedOrder({ ...selectedOrder, isPaid: value });
   };
@@ -153,7 +201,7 @@ const ViewOrderAndEdit = ({ direction }) => {
 
   useEffect(() => {
     fetchUnpaidOrders();
-  }, [selectedOrder]);
+  }, []);
 
   signIn("haochen@hawkepro.com", "hawkeprohibition");
 
@@ -165,6 +213,15 @@ const ViewOrderAndEdit = ({ direction }) => {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
+        <Text style={styles.headerText}>
+          Total This Screen Alcohol Quantities
+        </Text>
+        {Object.entries(alcoholTotalQuantities).map(([label, quantity]) => (
+          <View style={styles.alcoholQuantityContainer} key={label}>
+            <Text style={styles.alcoholLabel}>{label}:</Text>
+            <Text style={styles.alcoholQuantity}>{quantity}</Text>
+          </View>
+        ))}
         <FlatList
           data={unpaidOrders}
           keyExtractor={(item) => item.id}
@@ -419,6 +476,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  alcoholQuantityContainer: {
+    flexDirection: "row",
+    marginBottom: 5,
+  },
+  alcoholLabel: {
+    fontWeight: "bold",
+  },
+  alcoholQuantity: {
+    marginLeft: 5,
   },
 });
 
