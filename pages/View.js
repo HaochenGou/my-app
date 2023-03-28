@@ -28,10 +28,10 @@ const ViewPage = () => {
 
   const fetchUnpaidOrders = async () => {
     try {
-      const q = query(collection(db, 'Orders'), where('isPaid', '==', false));
-      const querySnapshot = await getDocs(q);
-      const orders = [];
-      querySnapshot.forEach((doc) => {
+        const q = query(collection(db, 'Orders'), where('isPaid' == 'false'));
+        const querySnapshot = await getDocs(q);
+        const orders = [];
+        querySnapshot.forEach((doc) => {
         orders.push({ ...doc.data(), id: doc.id });
       });
       setUnpaidOrders(orders);
