@@ -21,16 +21,19 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
+import { useNavigation } from "@react-navigation/native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
+
 
 const ViewOrderAndEdit = ({ direction }) => {
   const [unpaidOrders, setUnpaidOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [alcoholItems, setAlcoholItems] = useState([]);
   const [dialogVisible, setDialogVisible] = useState(false);
+  const navigation = useNavigation();
 
   const signIn = async (email, password) => {
     try {
@@ -125,6 +128,10 @@ const ViewOrderAndEdit = ({ direction }) => {
     } catch (error) {
       console.error("Error deleting order:", error);
     }
+  };
+
+  const handleEditOrder = (orderId) => {
+    navigation.navigate("Input Order", { orderId });
   };
 
   const fetchAlcoholItems = async (orderId) => {
@@ -266,6 +273,12 @@ const ViewOrderAndEdit = ({ direction }) => {
                     >
                       <Text style={styles.deleteButtonText}>Delete</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.editButton}
+                      onPress={() => handleEditOrder(item.id)}
+                    >
+                      <Text style={styles.editButtonText}>Edit</Text>
+                    </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={saveOrder}>
                       <Text style={styles.buttonText}>Save</Text>
@@ -307,6 +320,20 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderWidth: 1,
   },
+  editButton: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  editButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+
   dialogTitle: {
     fontSize: 24,
     fontWeight: "bold",

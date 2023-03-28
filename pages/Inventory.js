@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Modal,
   Button,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { app } from "../firebase/firebase";
 import {
@@ -109,7 +111,10 @@ const Inventory = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+         <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.centeredView}
+        >
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>Edit Quantity</Text>
             <TextInput
@@ -124,7 +129,7 @@ const Inventory = () => {
               <Button title="Cancel" onPress={handleCancel} />
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
       <FlatList
         data={inventoryData}

@@ -51,7 +51,7 @@ const OrderInput = ({ navigation, route }) => {
   const [WilliamLondonDryQuantity, setWilliamLondonDryQuantity] = useState(0);
 
   // Add other alcohols here
-  const docId = route.params?.docId;
+  const orderId = route.params?.orderId;
 
   const signIn = async (email, password) => {
     try {
@@ -68,14 +68,14 @@ const OrderInput = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (docId) {
-      fetchDocument(docId);
+    if (orderId) {
+      fetchDocument(orderId);
     }
-  }, [docId]);
+  }, [orderId]);
 
-  const fetchDocument = async (docId) => {
+  const fetchDocument = async (orderId) => {
     try {
-      const docRef = doc(db, "Orders", docId);
+      const docRef = doc(db, "Orders", orderId);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -126,8 +126,8 @@ const OrderInput = ({ navigation, route }) => {
       }
 
       const ordersRef = collection(db, "Orders");
-      if (docId) {
-        const docRef = doc(db, "Orders", docId);
+      if (orderId) {
+        const docRef = doc(db, "Orders", orderId);
         await updateDoc(docRef, {
           orderAddress: orderAddress,
           orderName: orderName,
@@ -346,12 +346,12 @@ const OrderInput = ({ navigation, route }) => {
             </View>
           </View>
           {/* Add other alcohol fields here /}
-    {/ Add more alcohol fields as needed */}
+          {/ Add more alcohol fields as needed */}
           <View style={styles.rowContainer}>
             <TouchableOpacity style={styles.button} onPress={saveOrder}>
               <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
-            {!docId && (
+            {!orderId && (
               <TouchableOpacity style={styles.button} onPress={resetOrder}>
                 <Text style={styles.buttonText}>Reset</Text>
               </TouchableOpacity>
