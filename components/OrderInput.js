@@ -120,6 +120,13 @@ const OrderInput = ({ navigation, route }) => {
             { label: "William London Dry", quantity: WilliamLondonDryQuantity}
             // Add other alcohols here
           ];
+          for (const alcoholOrder of alcoholOrders) {
+            const alcoholRef = doc(docRef, "alcohol", alcoholOrder.label);
+            await setDoc(alcoholRef, {
+            label: alcoholOrder.label,
+            quantity: alcoholOrder.quantity,
+          });
+        }
         } else {
       const docRef = await addDoc(ordersRef, {
         orderAddress: orderAddress,
