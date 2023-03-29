@@ -21,7 +21,6 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
-import { useNavigation } from "@react-navigation/native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth(app);
@@ -29,6 +28,7 @@ const db = getFirestore(app);
 const initialAlcoholTotalQuantities = {
   "Birdie Juice": 0,
   "Baby-X-Vodka": 0,
+  "Orange Float": 0,
   "Lady Sophia": 0,
   "SugarLips Vodka": 0,
   "Sir Perwinkle Gin": 0,
@@ -44,7 +44,6 @@ const ViewOrderAndEdit = ({ direction }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [alcoholItems, setAlcoholItems] = useState([]);
   const [dialogVisible, setDialogVisible] = useState(false);
-  const navigation = useNavigation();
   const [alcoholTotalQuantities, setAlcoholTotalQuantities] = useState(
     initialAlcoholTotalQuantities
   );
@@ -107,6 +106,7 @@ const ViewOrderAndEdit = ({ direction }) => {
       "Birdie Juice",
       "Baby-X-Vodka",
       "Lady Sophia",
+      "Orange Float",
       "SugarLips Vodka",
       "Sir Perwinkle Gin",
       "Scoundrel Rumbum",
@@ -179,9 +179,6 @@ const ViewOrderAndEdit = ({ direction }) => {
     }
   };
 
-  const handleEditOrder = (orderId) => {
-    navigation.navigate("Input Order", { orderId });
-  };
 
   const fetchAlcoholItems = async (orderId) => {
     try {
@@ -341,13 +338,6 @@ const ViewOrderAndEdit = ({ direction }) => {
                     >
                       <Text style={styles.deleteButtonText}>Delete</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.editButton}
-                      onPress={() => handleEditOrder(item.id)}
-                    >
-                      <Text style={styles.editButtonText}>Edit</Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity style={styles.button} onPress={saveOrder}>
                       <Text style={styles.buttonText}>Save</Text>
                     </TouchableOpacity>
@@ -378,7 +368,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10,
   },
   orderContainer: {
     backgroundColor: "#f5f5f5",
@@ -387,19 +377,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderColor: "#ddd",
     borderWidth: 1,
-  },
-  editButton: {
-    backgroundColor: "#4CAF50",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  editButtonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
   },
 
   dialogTitle: {
@@ -436,7 +413,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     flex: 1,
-    padding: 20,
+    padding: 10,
   },
   checkBoxContainer: {
     flexDirection: "row",

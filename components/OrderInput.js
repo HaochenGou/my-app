@@ -26,6 +26,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const OrderInput = ({ navigation, route }) => {
+  
   const [orderAddress, setOrderAddress] = useState("");
   const [orderName, setOrderName] = useState("");
   const [orderLicense, setOrderLicense] = useState("");
@@ -37,6 +38,7 @@ const OrderInput = ({ navigation, route }) => {
   const [birdieJuiceQuantity, setBirdieJuiceQuantity] = useState(0);
   const [babyXVodkaQuantity, setBabyXVodkaQuantity] = useState(0);
   const [LadySophiaQuantity, setLadySophiaQuantity] = useState(0);
+  const [orangeFloatQuantity, setOrangeFloatQuantity] = useState(0);
   const [SugarLipsVodkaQuantity, setSugarLipsVodkaQuantity] = useState(0);
   const [SirPerwinkleGinQuantity, setSirPerwinkleGinQuantity] = useState(0);
   const [ScoundrelRumbumQuantity, setScoundrelRumbumQuantity] = useState(0);
@@ -91,6 +93,7 @@ const OrderInput = ({ navigation, route }) => {
         setBirdieJuiceQuantity(data.birdieJuiceQuantity);
         setBabyXVodkaQuantity(data.babyXVodkaQuantity);
         setLadySophiaQuantity(data.LadySophiaQuantity);
+        setOrangeFloat(data.orangeFloatQuantity);
         setSugarLipsVodkaQuantity(data.SugarLipsVodkaQuantity);
         setSirPerwinkleGinQuantity(data.SirPerwinkleGinQuantity);
         setScoundrelRumbumQuantity(data.ScoundrelRumbumQuantity);
@@ -142,6 +145,7 @@ const OrderInput = ({ navigation, route }) => {
           { label: "Birdie Juice", quantity: birdieJuiceQuantity },
           { label: "Baby-X-Vodka", quantity: babyXVodkaQuantity },
           { label: "Lady Sophia", quantity: LadySophiaQuantity },
+          { label: "Orange Float", quantity: orangeFloatQuantity },
           { label: "SugarLips Vodka", quantity: SugarLipsVodkaQuantity },
           { label: "Sir Perwinkle Gin", quantity: SirPerwinkleGinQuantity },
           { label: "Scoundrel Rumbum", quantity: ScoundrelRumbumQuantity },
@@ -181,6 +185,7 @@ const OrderInput = ({ navigation, route }) => {
           { label: "Birdie Juice", quantity: birdieJuiceQuantity },
           { label: "Baby-X-Vodka", quantity: babyXVodkaQuantity },
           { label: "Lady Sophia", quantity: LadySophiaQuantity },
+          { label: "Orange Float", quantity: orangeFloatQuantity },
           { label: "SugarLips Vodka", quantity: SugarLipsVodkaQuantity },
           { label: "Sir Perwinkle Gin", quantity: SirPerwinkleGinQuantity },
           { label: "Scoundrel Rumbum", quantity: ScoundrelRumbumQuantity },
@@ -234,6 +239,7 @@ const OrderInput = ({ navigation, route }) => {
     setIsDelivered(false);
     setBirdieJuiceQuantity(0);
     setBabyXVodkaQuantity(0);
+    setOrangeFloatQuantity(0);
     setLadySophiaQuantity(0);
     setSugarLipsVodkaQuantity(0);
     setSirPerwinkleGinQuantity(0);
@@ -275,6 +281,12 @@ const OrderInput = ({ navigation, route }) => {
             onChangeText={(text) => setLadySophiaQuantity(parseInt(text) || 0)}
             isNumberInput
           />
+          <Field
+            label="Orange Float"
+            onChangeText={(text) => setOrangeFloatQuantity(parseInt(text) || 0)}
+            isNumberInput
+          />
+
           <Field
             label="SugarLips Vodka"
             onChangeText={(text) =>
