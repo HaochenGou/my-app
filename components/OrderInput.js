@@ -166,7 +166,7 @@ const OrderInput = ({ navigation, route }) => {
         ];
         for (const alcoholOrder of alcoholOrders) {
           const alcoholRef = doc(docRef, "alcohol", alcoholOrder.label);
-          await setDoc(alcoholRef, {
+          await updateDoc(alcoholRef, {
             label: alcoholOrder.label,
             quantity: alcoholOrder.quantity,
           });

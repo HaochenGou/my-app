@@ -21,7 +21,6 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
-import EditOrderForm from "./EditOrderForm";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth(app);
@@ -48,7 +47,6 @@ const ViewOrderAndEdit = ({ direction }) => {
   const [alcoholTotalQuantities, setAlcoholTotalQuantities] = useState(
     initialAlcoholTotalQuantities
   );
-  const [editModalVisible, setEditModalVisible] = useState(false);
 
   const signIn = async (email, password) => {
     try {
@@ -216,7 +214,7 @@ const ViewOrderAndEdit = ({ direction }) => {
         )}
         {direction == "Paid" && (
           <Text style={styles.headerText}>
-            Total not delivered Alcohol Quantities
+            Total Not Delivered Alcohol Quantities
           </Text>
         )}
         {direction == "Delivered" && (
@@ -299,26 +297,6 @@ const ViewOrderAndEdit = ({ direction }) => {
                         </TouchableOpacity>
                       </SafeAreaView>
                     </Modal>
-                    <Modal visible={editModalVisible} animationType="slide">
-                      <SafeAreaView style={styles.modalSafeArea}>
-                        <ScrollView>
-                          <View style={styles.modalContent}>
-                            {selectedOrder && (
-                              <EditOrderForm
-                                selectedOrder={selectedOrder}
-                                setSelectedOrder={setSelectedOrder}
-                              />
-                            )}
-                            <TouchableOpacity
-                              style={styles.button}
-                              onPress={() => setEditModalVisible(false)}
-                            >
-                              <Text style={styles.buttonText}>Save</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </ScrollView>
-                      </SafeAreaView>
-                    </Modal>
 
                     <View style={styles.rowContainer}>
                       <View style={styles.checkBoxContainer}>
@@ -359,12 +337,6 @@ const ViewOrderAndEdit = ({ direction }) => {
                       onPress={showDialog}
                     >
                       <Text style={styles.deleteButtonText}>Delete</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => setEditModalVisible(true)}
-                    >
-                      <Text style={styles.buttonText}>Edit</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={saveOrder}>
