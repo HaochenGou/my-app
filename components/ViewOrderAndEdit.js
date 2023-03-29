@@ -315,12 +315,6 @@ const ViewOrderAndEdit = ({ direction }) => {
                             >
                               <Text style={styles.buttonText}>Save</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity
-                              style={styles.button}
-                              onPress={() => setEditModalVisible(false)}
-                            >
-                              <Text style={styles.buttonText}>Cancel</Text>
-                            </TouchableOpacity>
                           </View>
                         </ScrollView>
                       </SafeAreaView>
