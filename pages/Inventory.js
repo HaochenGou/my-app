@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -25,8 +25,6 @@ import {
 } from "firebase/firestore";
 
 const auth = getAuth(app);
-import AlcoholTotalQuantitiesContext from "../components/AlcoholTotalQuantitiesContext";
-
 const db = getFirestore(app);
 
 const Inventory = () => {
@@ -35,7 +33,6 @@ const Inventory = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [editedQuantity, setEditedQuantity] = useState('');
-  const alcoholTotalQuantities = useContext(AlcoholTotalQuantitiesContext);
 
   const signIn = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -53,15 +50,10 @@ const Inventory = () => {
     let inventoryItems = [];
     snapshot.forEach((doc) => {
       const data = doc.data();
-      const alcoholEntry = Object.entries(alcoholTotalQuantities).find(
-        ([label, quantity]) => label === data.name
-      );
-      const alcoholQuantity = alcoholEntry ? alcoholEntry[1] : 0;
-      const updatedQuantity = data.quantity - alcoholQuantity;
       inventoryItems.push({
         id: doc.id,
         name: data.name,
-        quantity: updatedQuantity,
+        quantity: data.quantity,
       });
     });
     setInventoryData(inventoryItems);
@@ -85,7 +77,7 @@ const Inventory = () => {
     if (user) {
       fetchData();
     }
-  }, [user, alcoholTotalQuantities]);
+  }, [user]);
 
   const openModal = (item) => {
     setCurrentItem(item);
@@ -209,4 +201,3 @@ const styles = StyleSheet.create({
 });
 
 export default Inventory;
-

@@ -21,7 +21,6 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
-import AlcoholTotalQuantitiesContext from "./AlcoholTotalQuantitiesContext";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const auth = getAuth(app);
@@ -216,11 +215,6 @@ const ViewOrderAndEdit = ({ direction }) => {
         {direction == "Paid" && (
           <Text style={styles.headerText}>
             Total Not Delivered Alcohol Quantities
-            <AlcoholTotalQuantitiesContext.Provider
-              value={alcoholTotalQuantities}
-            >
-              {/* Your root component or navigation here */}
-            </AlcoholTotalQuantitiesContext.Provider>
           </Text>
         )}
         {direction == "Delivered" && (
