@@ -52,7 +52,7 @@ const Inventory = () => {
       const data = doc.data();
       inventoryItems.push({
         id: doc.id,
-        label: data.label,
+        name: data.label,
         quantity: data.quantity,
       });
     });
@@ -96,7 +96,7 @@ const Inventory = () => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.item} onPress={() => openModal(item)}>
-      <Text style={styles.title}>{item.label}</Text>
+      <Text style={styles.title}>{item.name}</Text>
       <Text>Quantity: {item.quantity}</Text>
     </TouchableOpacity>
   );
