@@ -19,6 +19,7 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
+  writeBatch
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -164,6 +165,14 @@ const ViewOrderAndEdit = ({ direction }) => {
     try {
       // Delete the order from the database
       const orderRef = doc(db, "Orders", selectedOrder.id);
+      const alcoholSubcollectionRef = collection(orderRef, "alcohol");
+      const alcoholSnapshot = await getDocs(alcoholSubcollectionRef);
+      const batch = writeBatch(db);
+      alcoholSnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+      await batch.commit();
+      
       await deleteDoc(orderRef);
 
       // Close the dialog
