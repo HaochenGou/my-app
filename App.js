@@ -17,7 +17,7 @@ function HomeScreen() {
         <Button theme="inventory" label="View/Edit Inventory" direction="Inventory"/>
         <Button theme="view" label="View/Edit Unpaid Order" direction="View Order"/>
         <Button theme="paid" label="View/Edit Paid Order" direction="Paid Order"/>
-        <Button theme="delivered" label="View/Edit Delivery History" direction="Delivered Order"/>
+        <Button theme="delivered" label="History" direction="Delivered Order"/>
       </View>
       <StatusBar style="auto" />
     </View>
