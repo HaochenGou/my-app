@@ -12,10 +12,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { app } from "../firebase/firebase";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -23,17 +20,24 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+
+let Device, Notifications = null;
 
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+if (Platform.OS !== "web") {
+  Device = require("expo-device");
+  Notifications = require("expo-notifications");
+}
+
+if (Platform.OS !== "web") {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+}
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -43,14 +47,18 @@ const Inventory = () => {
   const [user, setUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
-  const [editedQuantity, setEditedQuantity] = useState('');
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [editedQuantity, setEditedQuantity] = useState("");
+  const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
   const signIn = async (email, password) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const user = userCredential.user;
     setUser(user);
   };
@@ -126,7 +134,7 @@ const Inventory = () => {
           setModalVisible(!modalVisible);
         }}
       >
-         <KeyboardAvoidingView
+        <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.centeredView}
         >

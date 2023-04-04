@@ -22,17 +22,24 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { CommonActions } from "@react-navigation/native";
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+
+let Device, Notifications = null;
 
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+if (Platform.OS !== "web") {
+  Device = require("expo-device");
+  Notifications = require("expo-notifications");
+}
+
+if (Platform.OS !== "web") {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+}
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -63,7 +70,7 @@ const OrderInput = ({ navigation, route }) => {
   const [ThickDirtySaltedCaramelQuantity, setThickDirtySaltedCaramelQuantity] =
     useState(0);
   const [WilliamLondonDryQuantity, setWilliamLondonDryQuantity] = useState(0);
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
@@ -91,22 +98,30 @@ const OrderInput = ({ navigation, route }) => {
     }
   }, [orderId]);
 
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  if (Platform.OS !== "web") {
+    useEffect(() => {
+      registerForPushNotificationsAsync().then((token) =>
+        setExpoPushToken(token)
+      );
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
+      notificationListener.current =
+        Notifications.addNotificationReceivedListener((notification) => {
+          setNotification(notification);
+        });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+      responseListener.current =
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          console.log(response);
+        });
 
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
+      return () => {
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+        Notifications.removeNotificationSubscription(responseListener.current);
+      };
+    }, []);
+  }
 
   const fetchDocument = async (orderId) => {
     try {
@@ -152,7 +167,7 @@ const OrderInput = ({ navigation, route }) => {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "New Order!!!",
-        body: 'Here is the new Order',
+        body: "Here is the new Order",
       },
       trigger: { seconds: 5 },
     });
@@ -160,37 +175,40 @@ const OrderInput = ({ navigation, route }) => {
 
   async function registerForPushNotificationsAsync() {
     let token;
-  
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
+
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "default",
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
+        lightColor: "#FF231F7C",
       });
     }
-  
+
     if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
+      if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
       }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
         return;
       }
-      token = (await Notifications.getExpoPushTokenAsync({projectId:'hawke-inventory'})).data;
+      token = (
+        await Notifications.getExpoPushTokenAsync({
+          projectId: "hawke-inventory",
+        })
+      ).data;
       console.log(token);
     } else {
-      alert('Must use physical device for Push Notifications');
+      alert("Must use physical device for Push Notifications");
     }
-  
+
     return token;
   }
-
-  
 
   const saveOrder = async () => {
     try {
@@ -297,8 +315,6 @@ const OrderInput = ({ navigation, route }) => {
         // Show success alert
         alert("Order saved successfully!");
 
-        
-
         // Return to the home page
         navigation.dispatch(
           CommonActions.reset({
@@ -310,9 +326,9 @@ const OrderInput = ({ navigation, route }) => {
     } catch (error) {
       console.error("Error adding document:", error);
     }
-   
-    if (Platform.OS !== 'web') {
-      await schedulePushNotification()
+
+    if (Platform.OS !== "web") {
+      await schedulePushNotification();
     }
   };
 

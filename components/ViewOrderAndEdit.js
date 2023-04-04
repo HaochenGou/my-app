@@ -13,6 +13,7 @@ import {
 import {
   getFirestore,
   collection,
+  orderBy,
   query,
   where,
   getDocs,
@@ -24,17 +25,23 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+let Device,
+  Notifications = null;
 
+if (Platform.OS !== "web") {
+  Device = require("expo-device");
+  Notifications = require("expo-notifications");
+}
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+if (Platform.OS !== "web") {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+}
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -82,19 +89,22 @@ const ViewOrderAndEdit = ({ direction }) => {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", false),
-          where("isDelivered", "==", false)
+          where("isDelivered", "==", false),
+          orderBy("orderNumber", "asc")
         );
       } else if (direction == "Paid") {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", true),
-          where("isDelivered", "==", false)
+          where("isDelivered", "==", false),
+          orderBy("orderNumber", "asc")
         );
       } else if (direction == "Delivered") {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", true),
-          where("isDelivered", "==", true)
+          where("isDelivered", "==", true),
+          orderBy("orderNumber", "asc")
         );
       }
       const querySnapshot = await getDocs(q);
