@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import InputPage from "./pages/Input";
 import Inventory from "./pages/Inventory";
 import ViewPage from "./pages/View";
@@ -8,10 +8,16 @@ import DeliveryPage from "./pages/Delivery";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Button from "./components/Button";
+import { FontAwesome } from "@expo/vector-icons"; 
 
 function HomeScreen() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
+       <View style={styles.iconContainer}>
+        <Text>
+        <FontAwesome name="star" size={24} color="white" /> 
+        </Text>
+      </View>
       <View style={styles.footerContainer}>
         <Button theme="input" label="Add New Order" direction="Input Order" />
         <Button
@@ -32,7 +38,7 @@ function HomeScreen() {
         <Button theme="delivered" label="History" direction="Delivered Order" />
       </View>
       <StatusBar style="auto" />
-    </ScrollView>
+    </View>
   );
 }
 
@@ -62,6 +68,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#25292e",
     alignItems: "center",
     justifyContent: "space-between", // Distribute the header and footer evenly
+  },
+  iconContainer: {
+    marginTop: 20, // Add some margin to the top
   },
   footerContainer: {
     flex: 1,
