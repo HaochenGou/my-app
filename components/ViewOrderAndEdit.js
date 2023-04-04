@@ -261,7 +261,7 @@ const ViewOrderAndEdit = ({ direction }) => {
                     </Text>
                     <Text style={styles.label}>Order Date:</Text>
                     <Text style={styles.value}>{selectedOrder.orderDate}</Text>
-                    <Text style={styles.label}>Order License:</Text>
+                    <Text style={styles.label}>License Number:</Text>
                     <Text style={styles.value}>
                       {selectedOrder.orderLicense}
                     </Text>

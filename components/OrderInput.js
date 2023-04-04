@@ -263,7 +263,7 @@ const OrderInput = ({ navigation, route }) => {
         <View style={styles.container}>
           <Field label="Order Address" onChangeText={setOrderAddress} />
           <Field label="Order Name" onChangeText={setOrderName} />
-          <Field label="Order License" onChangeText={setOrderLicense} />
+          <Field label="License Number" onChangeText={setOrderLicense} />
           <Field label="Invoice Number" onChangeText={setOrderNumber} />
           <Field label="Order Date" onChangeText={setOrderDate} />
           <Field
