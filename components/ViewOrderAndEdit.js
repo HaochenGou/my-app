@@ -19,7 +19,7 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
-  writeBatch
+  writeBatch,
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -172,7 +172,7 @@ const ViewOrderAndEdit = ({ direction }) => {
         batch.delete(doc.ref);
       });
       await batch.commit();
-      
+
       await deleteDoc(orderRef);
 
       // Close the dialog
@@ -246,7 +246,7 @@ const ViewOrderAndEdit = ({ direction }) => {
               onPress={() => handleShowOrderDetails(item)}
             >
               <Text style={styles.orderText}>
-                {item.orderName} {item.orderDate}
+                {item.orderNumber} {item.orderName}
               </Text>
             </TouchableOpacity>
           )}

@@ -26,7 +26,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const OrderInput = ({ navigation, route }) => {
-  
   const [orderAddress, setOrderAddress] = useState("");
   const [orderName, setOrderName] = useState("");
   const [orderLicense, setOrderLicense] = useState("");
@@ -118,19 +117,14 @@ const OrderInput = ({ navigation, route }) => {
 
   const saveOrder = async () => {
     try {
-      if(
-      (!orderAddress &&
-        !orderName &&
-        !orderLicense &&
-        !orderNumber &&
-        !orderDate) ||
-      (orderAddress &&
-        orderName &&
-        orderLicense &&
-        !orderNumber &&
-        orderDate)
-      )
-        {
+      if (
+        (!orderAddress &&
+          !orderName &&
+          !orderLicense &&
+          !orderNumber &&
+          !orderDate) ||
+        (orderAddress && orderName && orderLicense && !orderNumber && orderDate)
+      ) {
         // Show alert if all required fields are empty
         alert("Please fill all required fields");
         return;
