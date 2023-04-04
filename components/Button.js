@@ -116,7 +116,7 @@ export default function Button({ label, theme, direction }) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 320, // Set the width to 90% to fit the screen better
+    width: 300, // Set the width to 90% to fit the screen better
     height: 68,
     marginHorizontal: 20,
     marginVertical: 10,
