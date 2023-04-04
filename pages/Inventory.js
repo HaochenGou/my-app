@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -23,6 +23,17 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -33,6 +44,10 @@ const Inventory = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [editedQuantity, setEditedQuantity] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const signIn = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
