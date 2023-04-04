@@ -265,6 +265,9 @@ const ViewOrderAndEdit = ({ direction }) => {
                     <Text style={styles.value}>
                       {selectedOrder.orderLicense}
                     </Text>
+                    <Text style={styles.label}>Note:</Text>
+                    <Text style={styles.value}>{selectedOrder.note}</Text>
+
                     <Text style={styles.label}>Alcohol Order:</Text>
                     <View>
                       {alcoholItems.map((item) => (

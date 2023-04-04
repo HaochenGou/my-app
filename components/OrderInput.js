@@ -32,6 +32,7 @@ const OrderInput = ({ navigation, route }) => {
   const [orderLicense, setOrderLicense] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
   const [orderDate, setOrderDate] = useState("");
+  const [note, setNote] = useState("");
   const [isPaid, setIsPaid] = useState(false);
   const [isDelivered, setIsDelivered] = useState(false);
   // Add alcohol quantities as state
@@ -87,6 +88,7 @@ const OrderInput = ({ navigation, route }) => {
         setOrderLicense(data.orderLicense);
         setOrderNumber(data.orderNumber);
         setOrderDate(data.orderDate);
+        setNote(data.note);
         setIsPaid(data.isPaid);
         setIsDelivered(data.isDelivered);
         // Add alcohol quantities as state
@@ -116,15 +118,21 @@ const OrderInput = ({ navigation, route }) => {
 
   const saveOrder = async () => {
     try {
-      if (
-        !orderAddress &&
+      if(
+      (!orderAddress &&
         !orderName &&
         !orderLicense &&
         !orderNumber &&
-        !orderDate
-      ) {
+        !orderDate) ||
+      (orderAddress &&
+        orderName &&
+        orderLicense &&
+        !orderNumber &&
+        orderDate)
+      )
+        {
         // Show alert if all required fields are empty
-        alert("Please fill in at least one field");
+        alert("Please fill all required fields");
         return;
       }
 
@@ -137,6 +145,7 @@ const OrderInput = ({ navigation, route }) => {
           orderLicense: orderLicense,
           orderNumber: orderNumber,
           orderDate: orderDate,
+          note: note,
           isPaid: isPaid,
           isDelivered: isDelivered,
           // Add alcohol quantities as state
@@ -178,6 +187,7 @@ const OrderInput = ({ navigation, route }) => {
           orderLicense: orderLicense,
           orderNumber: orderNumber,
           orderDate: orderDate,
+          note: note,
           isPaid: isPaid,
           isDelivered: isDelivered,
         });
@@ -235,6 +245,7 @@ const OrderInput = ({ navigation, route }) => {
     setOrderLicense("");
     setOrderNumber("");
     setOrderDate("");
+    setNote("");
     setIsPaid(false);
     setIsDelivered(false);
     setBirdieJuiceQuantity(0);
@@ -264,7 +275,7 @@ const OrderInput = ({ navigation, route }) => {
           <Field label="Order Address" onChangeText={setOrderAddress} />
           <Field label="Order Name" onChangeText={setOrderName} />
           <Field label="License Number" onChangeText={setOrderLicense} />
-          <Field label="Invoice Number" onChangeText={setOrderNumber} />
+          <Field label="Invoice Number*" onChangeText={setOrderNumber} />
           <Field label="Order Date" onChangeText={setOrderDate} />
           <Field
             label="Birdie Juice"
@@ -336,6 +347,7 @@ const OrderInput = ({ navigation, route }) => {
             }
             isNumberInput
           />
+          <Field label="Note" onChangeText={setNote} />
           {/* Add other alcohol fields here */}
           <View style={styles.rowContainer}>
             <View style={styles.checkBoxContainer}>
