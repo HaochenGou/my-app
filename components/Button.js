@@ -15,21 +15,13 @@ export default function Button({ label, theme, direction }) {
   if (theme === "input") {
     return (
       <View
-        style={[
-          styles.buttonContainer,
-          { borderWidth: 4, borderColor: "#ffd33d", borderRadius: 18 },
-        ]}
+        style={[styles.buttonContainer, { borderWidth: 0, borderRadius: 18 }]}
       >
         <Pressable
           style={[styles.button, { backgroundColor: "#fff" }]}
           onPress={handlePress}
         >
-          <Entypo
-            name="add-to-list"
-            size={24}
-            color="black"
-            style={styles.buttonIcon}
-          />
+          <Entypo name="add-to-list" size={24} style={styles.buttonIcon} />
           <Text style={[styles.buttonLabel, { color: "#25292e" }]}>
             {label}
           </Text>
@@ -39,21 +31,13 @@ export default function Button({ label, theme, direction }) {
   } else if (theme === "inventory") {
     return (
       <View
-        style={[
-          styles.buttonContainer,
-          { borderWidth: 4, borderColor: "#ffd33d", borderRadius: 18 },
-        ]}
+        style={[styles.buttonContainer, { borderWidth: 0, borderRadius: 18 }]}
       >
         <Pressable
           style={[styles.button, { backgroundColor: "#fff" }]}
           onPress={handlePress}
         >
-          <MaterialIcons
-            name="inventory"
-            size={24}
-            color="black"
-            style={styles.buttonIcon}
-          />
+          <MaterialIcons name="inventory" size={24} style={styles.buttonIcon} />
           <Text style={[styles.buttonLabel, { color: "#25292e" }]}>
             {label}
           </Text>
@@ -63,21 +47,13 @@ export default function Button({ label, theme, direction }) {
   } else if (theme === "paid") {
     return (
       <View
-        style={[
-          styles.buttonContainer,
-          { borderWidth: 4, borderColor: "#ffd33d", borderRadius: 18 },
-        ]}
+        style={[styles.buttonContainer, { borderWidth: 0, borderRadius: 18 }]}
       >
         <Pressable
           style={[styles.button, { backgroundColor: "#fff" }]}
           onPress={handlePress}
         >
-          <MaterialIcons
-            name="payments"
-            size={24}
-            color="black"
-            style={styles.buttonIcon}
-          />
+          <MaterialIcons name="payments" size={24} style={styles.buttonIcon} />
           <Text style={[styles.buttonLabel, { color: "#25292e" }]}>
             {label}
           </Text>
@@ -87,10 +63,7 @@ export default function Button({ label, theme, direction }) {
   } else if (theme === "view") {
     return (
       <View
-        style={[
-          styles.buttonContainer,
-          { borderWidth: 4, borderColor: "#ffd33d", borderRadius: 18 },
-        ]}
+        style={[styles.buttonContainer, { borderWidth: 0, borderRadius: 18 }]}
       >
         <Pressable
           style={[styles.button, { backgroundColor: "#fff" }]}
@@ -99,7 +72,6 @@ export default function Button({ label, theme, direction }) {
           <Ionicons
             name="file-tray-full-outline"
             size={24}
-            color="black"
             style={styles.buttonIcon}
           />
           <Text style={[styles.buttonLabel, { color: "#25292e" }]}>
@@ -111,10 +83,7 @@ export default function Button({ label, theme, direction }) {
   } else if (theme === "delivered") {
     return (
       <View
-        style={[
-          styles.buttonContainer,
-          { borderWidth: 4, borderColor: "#ffd33d", borderRadius: 18 },
-        ]}
+        style={[styles.buttonContainer, { borderWidth: 0, borderRadius: 18 }]}
       >
         <Pressable
           style={[styles.button, { backgroundColor: "#fff" }]}
@@ -123,7 +92,6 @@ export default function Button({ label, theme, direction }) {
           <MaterialCommunityIcons
             name="truck-delivery"
             size={24}
-            color="black"
             style={styles.buttonIcon}
           />
           <Text style={[styles.buttonLabel, { color: "#25292e" }]}>
@@ -148,7 +116,7 @@ export default function Button({ label, theme, direction }) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 320,
+    width: 320, // Set the width to 90% to fit the screen better
     height: 68,
     marginHorizontal: 20,
     marginVertical: 10,
@@ -163,12 +131,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
+    elevation: 2, // Add elevation for a subtle shadow effect
+    borderColor: "transparent", // Hide the black border
   },
   buttonIcon: {
     paddingRight: 8,
   },
   buttonLabel: {
-    color: "#fff",
+    color: "#25292e", // Change the text color to match the other buttons
     fontSize: 16,
   },
 });

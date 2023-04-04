@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import InputPage from './pages/Input';
 import Inventory from './pages/Inventory';
 import ViewPage from './pages/View';
@@ -11,7 +11,8 @@ import Button from './components/Button';
 
 function HomeScreen() {
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+
       <View style={styles.footerContainer}>
         <Button theme="input" label="Add New Order" direction="Input Order"/>
         <Button theme="inventory" label="View/Edit Inventory" direction="Inventory"/>
@@ -20,7 +21,7 @@ function HomeScreen() {
         <Button theme="delivered" label="History" direction="Delivered Order"/>
       </View>
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 }
 
@@ -28,9 +29,10 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+ 
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Hawke Prohibition Distilleries" component={HomeScreen}/>
         <Stack.Screen name="Input Order" component={InputPage}/>
         <Stack.Screen name="Inventory" component={Inventory}/>
         <Stack.Screen name="View Order" component={ViewPage}/>
@@ -46,11 +48,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#25292e',
     alignItems: 'center',
+    justifyContent: 'space-between', // Distribute the header and footer evenly
   },
   footerContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-
   }
 });
