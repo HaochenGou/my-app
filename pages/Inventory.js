@@ -25,8 +25,8 @@ let Device, Notifications = null;
 
 
 if (Platform.OS !== "web") {
-  Device = require("expo-device");
-  Notifications = require("expo-notifications");
+  Device = require("expo-device").Notifications;
+  Notifications = require("expo-notifications").Device;
 }
 
 if (Platform.OS !== "web") {

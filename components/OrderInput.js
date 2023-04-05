@@ -27,8 +27,8 @@ let Device, Notifications = null;
 
 
 if (Platform.OS !== "web") {
-  Device = require("expo-device");
-  Notifications = require("expo-notifications");
+  Device = require("expo-device").Notifications;
+  Notifications = require("expo-notifications").Device;
 }
 
 if (Platform.OS !== "web") {
@@ -314,7 +314,7 @@ const OrderInput = ({ navigation, route }) => {
 
         // Show success alert
         alert("Order saved successfully!");
-
+        
         // Return to the home page
         navigation.dispatch(
           CommonActions.reset({
@@ -322,6 +322,11 @@ const OrderInput = ({ navigation, route }) => {
             routes: [{ name: "Home" }, { name: "Input Order" }],
           })
         );
+
+        
+
+        
+      
       }
     } catch (error) {
       console.error("Error adding document:", error);
