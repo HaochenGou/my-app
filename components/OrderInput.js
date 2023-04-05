@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  Platform,
 } from "react-native";
 import Field from "../components/Field";
 import { app } from "../firebase/firebase";
@@ -22,24 +21,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { CommonActions } from "@react-navigation/native";
-
-let Device, Notifications = null;
-
-
-if (Platform.OS !== "web") {
-  Device = require("expo-device").Notifications;
-  Notifications = require("expo-notifications").Device;
-}
-
-if (Platform.OS !== "web") {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    }),
-  });
-}
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -70,10 +51,6 @@ const OrderInput = ({ navigation, route }) => {
   const [ThickDirtySaltedCaramelQuantity, setThickDirtySaltedCaramelQuantity] =
     useState(0);
   const [WilliamLondonDryQuantity, setWilliamLondonDryQuantity] = useState(0);
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
 
   // Add other alcohols here
   const orderId = route.params?.orderId;
@@ -97,31 +74,6 @@ const OrderInput = ({ navigation, route }) => {
       fetchDocument(orderId);
     }
   }, [orderId]);
-
-  if (Platform.OS !== "web") {
-    useEffect(() => {
-      registerForPushNotificationsAsync().then((token) =>
-        setExpoPushToken(token)
-      );
-
-      notificationListener.current =
-        Notifications.addNotificationReceivedListener((notification) => {
-          setNotification(notification);
-        });
-
-      responseListener.current =
-        Notifications.addNotificationResponseReceivedListener((response) => {
-          console.log(response);
-        });
-
-      return () => {
-        Notifications.removeNotificationSubscription(
-          notificationListener.current
-        );
-        Notifications.removeNotificationSubscription(responseListener.current);
-      };
-    }, []);
-  }
 
   const fetchDocument = async (orderId) => {
     try {
@@ -162,53 +114,6 @@ const OrderInput = ({ navigation, route }) => {
       console.error("Error fetching document:", error);
     }
   };
-
-  async function schedulePushNotification() {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "New Order!!!",
-        body: "Here is the new Order",
-      },
-      trigger: { seconds: 5 },
-    });
-  }
-
-  async function registerForPushNotificationsAsync() {
-    let token;
-
-    if (Platform.OS === "android") {
-      await Notifications.setNotificationChannelAsync("default", {
-        name: "default",
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: "#FF231F7C",
-      });
-    }
-
-    if (Device.isDevice) {
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notification!");
-        return;
-      }
-      token = (
-        await Notifications.getExpoPushTokenAsync({
-          projectId: "hawke-inventory",
-        })
-      ).data;
-      console.log(token);
-    } else {
-      alert("Must use physical device for Push Notifications");
-    }
-
-    return token;
-  }
 
   const saveOrder = async () => {
     try {
@@ -314,7 +219,7 @@ const OrderInput = ({ navigation, route }) => {
 
         // Show success alert
         alert("Order saved successfully!");
-        
+
         // Return to the home page
         navigation.dispatch(
           CommonActions.reset({
@@ -322,18 +227,9 @@ const OrderInput = ({ navigation, route }) => {
             routes: [{ name: "Home" }, { name: "Input Order" }],
           })
         );
-
-        
-
-        
-      
       }
     } catch (error) {
       console.error("Error adding document:", error);
-    }
-
-    if (Platform.OS !== "web") {
-      await schedulePushNotification();
     }
   };
 

@@ -25,23 +25,6 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-let Device,
-  Notifications = null;
-
-  if (Platform.OS !== "web") {
-    Device = require("expo-device").Notifications;
-    Notifications = require("expo-notifications").Device;
-  }
-
-if (Platform.OS !== "web") {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    }),
-  });
-}
 
 const auth = getAuth(app);
 const db = getFirestore(app);

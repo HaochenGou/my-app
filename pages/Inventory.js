@@ -21,24 +21,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-let Device, Notifications = null;
-
-
-if (Platform.OS !== "web") {
-  Device = require("expo-device").Notifications;
-  Notifications = require("expo-notifications").Device;
-}
-
-if (Platform.OS !== "web") {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    }),
-  });
-}
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 
@@ -48,10 +30,6 @@ const Inventory = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [editedQuantity, setEditedQuantity] = useState("");
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
 
   const signIn = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(
