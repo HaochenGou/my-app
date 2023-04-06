@@ -1,13 +1,16 @@
-import { StyleSheet, View, Pressable, Text } from "react-native";
+import { StyleSheet, View, Pressable, Text, Dimensions } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function Button({ label, theme, direction }) {
   const navigation = useNavigation();
+  
   const handlePress = () => {
     navigation.navigate(direction);
   };
@@ -80,7 +83,7 @@ export default function Button({ label, theme, direction }) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 300, // Set the width to 90% to fit the screen better
+    width: windowWidth * 0.9, // Set the width to 90% to fit the screen better
     height: 68,
     marginHorizontal: 20,
     marginVertical: 10,

@@ -8,6 +8,7 @@ import {
   Modal,
   ScrollView,
   SafeAreaView,
+  Dimensions,
   Platform,
 } from "react-native";
 import {
@@ -51,11 +52,13 @@ const ViewOrderAndEdit = () => {
   const [alcoholTotalQuantities, setAlcoholTotalQuantities] = useState(
     initialAlcoholTotalQuantities
   );
-  const [direction, setDirection] = useState('All');
+  const [direction, setDirection] = useState("All");
 
+  const filterOptions = ["All", "Paid", "Unpaid", "Delivered"];
+  const [pickerModalVisible, setPickerModalVisible] = useState(false);
 
-
-  const filterOptions = ['All', 'Paid', 'Unpaid', 'Delivered'];
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
 
   const signIn = async (email, password) => {
     try {
@@ -82,11 +85,8 @@ const ViewOrderAndEdit = () => {
           orderBy("orderNumber", "asc")
         );
       } else if (direction == "All") {
-        q = query(
-          collection(db, "Orders"),
-          orderBy("orderNumber", "asc")
-        );
-      }else if (direction == "Paid") {
+        q = query(collection(db, "Orders"), orderBy("orderNumber", "asc"));
+      } else if (direction == "Paid") {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", true),
@@ -173,6 +173,14 @@ const ViewOrderAndEdit = () => {
     setDialogVisible(true);
   };
 
+  const handleOpenPickerModal = () => {
+    setPickerModalVisible(true);
+  };
+
+  const handleClosePickerModal = () => {
+    setPickerModalVisible(false);
+  };
+
   const handleCancel = () => {
     setDialogVisible(false);
   };
@@ -234,15 +242,13 @@ const ViewOrderAndEdit = () => {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
-      <Picker
-        selectedValue={direction}
-        style={{ width: 200 }}
-        onValueChange={(itemValue) => setDirection(itemValue)}
-      >
-        {filterOptions.map((option) => (
-          <Picker.Item key={option} label={option} value={option} />
-        ))}
-      </Picker>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={handleOpenPickerModal}>
+            <Text style={styles.openPickerText}>
+              {direction ? direction : "Select Filter"}
+            </Text>
+          </TouchableOpacity>
+        </View>
         {direction == "All" && (
           <Text style={styles.headerText}>Total Alcohol Quantities</Text>
         )}
@@ -395,6 +401,22 @@ const ViewOrderAndEdit = () => {
             </ScrollView>
           </SafeAreaView>
         </Modal>
+        <Modal visible={pickerModalVisible} animationType="slide">
+          <SafeAreaView style={styles.pickerModalContainer}>
+            <Picker
+              selectedValue={direction}
+              style={{ width: windowWidth * 0.9 }}
+              onValueChange={(itemValue) => {
+                setDirection(itemValue);
+                handleClosePickerModal();
+              }}
+            >
+              {filterOptions.map((option) => (
+                <Picker.Item key={option} label={option} value={option} />
+              ))}
+            </Picker>
+          </SafeAreaView>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -411,6 +433,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+
+  pickerModalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  openPickerText: {
+    fontSize: 18,
+    color: "#007AFF",
+  },
+
   orderContainer: {
     backgroundColor: "#f5f5f5",
     padding: 15,
