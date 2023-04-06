@@ -44,22 +44,6 @@ export default function Button({ label, theme, direction }) {
         </Pressable>
       </View>
     );
-  } else if (theme === "paid") {
-    return (
-      <View
-        style={[styles.buttonContainer, { borderWidth: 0, borderRadius: 18 }]}
-      >
-        <Pressable
-          style={[styles.button, { backgroundColor: "#fff" }]}
-          onPress={handlePress}
-        >
-          <MaterialIcons name="payments" size={24} style={styles.buttonIcon} />
-          <Text style={[styles.buttonLabel, { color: "#25292e" }]}>
-            {label}
-          </Text>
-        </Pressable>
-      </View>
-    );
   } else if (theme === "view") {
     return (
       <View
@@ -71,26 +55,6 @@ export default function Button({ label, theme, direction }) {
         >
           <Ionicons
             name="file-tray-full-outline"
-            size={24}
-            style={styles.buttonIcon}
-          />
-          <Text style={[styles.buttonLabel, { color: "#25292e" }]}>
-            {label}
-          </Text>
-        </Pressable>
-      </View>
-    );
-  } else if (theme === "delivered") {
-    return (
-      <View
-        style={[styles.buttonContainer, { borderWidth: 0, borderRadius: 18 }]}
-      >
-        <Pressable
-          style={[styles.button, { backgroundColor: "#fff" }]}
-          onPress={handlePress}
-        >
-          <MaterialCommunityIcons
-            name="truck-delivery"
             size={24}
             style={styles.buttonIcon}
           />

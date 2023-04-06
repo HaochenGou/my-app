@@ -9,6 +9,7 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
+  Picker,
 } from "react-native";
 import {
   getFirestore,
@@ -42,7 +43,7 @@ const initialAlcoholTotalQuantities = {
   "William London Dry": 0,
 };
 
-const ViewOrderAndEdit = ({ direction }) => {
+const ViewOrderAndEdit = () => {
   const [unpaidOrders, setUnpaidOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [alcoholItems, setAlcoholItems] = useState([]);
@@ -50,6 +51,11 @@ const ViewOrderAndEdit = ({ direction }) => {
   const [alcoholTotalQuantities, setAlcoholTotalQuantities] = useState(
     initialAlcoholTotalQuantities
   );
+  const [direction, setDirection] = useState('All');
+
+
+
+  const filterOptions = ['All', 'Paid', 'Unpaid', 'Delivered'];
 
   const signIn = async (email, password) => {
     try {
@@ -75,7 +81,12 @@ const ViewOrderAndEdit = ({ direction }) => {
           where("isDelivered", "==", false),
           orderBy("orderNumber", "asc")
         );
-      } else if (direction == "Paid") {
+      } else if (direction == "All") {
+        q = query(
+          collection(db, "Orders"),
+          orderBy("orderNumber", "asc")
+        );
+      }else if (direction == "Paid") {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", true),
@@ -211,7 +222,7 @@ const ViewOrderAndEdit = ({ direction }) => {
 
   useEffect(() => {
     fetchUnpaidOrders();
-  }, []);
+  }, [direction]);
 
   signIn("haochen@hawkepro.com", "hawkeprohibition");
 
@@ -223,6 +234,18 @@ const ViewOrderAndEdit = ({ direction }) => {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
+      <Picker
+        selectedValue={direction}
+        style={{ width: 200 }}
+        onValueChange={(itemValue) => setDirection(itemValue)}
+      >
+        {filterOptions.map((option) => (
+          <Picker.Item key={option} label={option} value={option} />
+        ))}
+      </Picker>
+        {direction == "All" && (
+          <Text style={styles.headerText}>Total Alcohol Quantities</Text>
+        )}
         {direction == "Unpaid" && (
           <Text style={styles.headerText}>Total Unpaid Alcohol Quantities</Text>
         )}

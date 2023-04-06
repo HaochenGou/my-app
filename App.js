@@ -3,8 +3,6 @@ import { StyleSheet, View, ScrollView, Image} from "react-native";
 import InputPage from "./pages/Input";
 import Inventory from "./pages/Inventory";
 import ViewPage from "./pages/View";
-import PaidPage from "./pages/Paid";
-import DeliveryPage from "./pages/Delivery";
 import logo from "./assets/logo.png";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -25,15 +23,9 @@ function HomeScreen() {
         />
         <Button
           theme="view"
-          label="View/Edit Unpaid Order"
+          label="View Order"
           direction="View Order"
         />
-        <Button
-          theme="paid"
-          label="View/Edit Paid Order"
-          direction="Paid Order"
-        />
-        <Button theme="delivered" label="History" direction="Delivered Order" />
       </ScrollView>
       <StatusBar style="auto" />
     </View>
@@ -53,8 +45,6 @@ export default function App() {
         <Stack.Screen name="Input Order" component={InputPage} />
         <Stack.Screen name="Inventory" component={Inventory} />
         <Stack.Screen name="View Order" component={ViewPage} />
-        <Stack.Screen name="Paid Order" component={PaidPage} />
-        <Stack.Screen name="Delivered Order" component={DeliveryPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
