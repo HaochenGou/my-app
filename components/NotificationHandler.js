@@ -11,7 +11,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const showNotification = async (title, body) => {
+const showNotification = async () => {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -60,8 +60,8 @@ const showNotification = async (title, body) => {
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: title,
-      body: 'Here is the notification body',
+      title: 'New Order',
+      body: 'You have a new order to fulfill',
       data: { data: 'goes here' },
     },
     trigger: { seconds: 2 },

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import Field from "../components/Field";
 import { app } from "../firebase/firebase";
@@ -21,6 +22,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { CommonActions } from "@react-navigation/native";
+import showNotification from "./NotificationHandler";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
