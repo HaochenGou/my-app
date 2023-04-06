@@ -9,7 +9,6 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
-  Picker,
 } from "react-native";
 import {
   getFirestore,
@@ -26,6 +25,7 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Picker } from "@react-native-picker/picker";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
