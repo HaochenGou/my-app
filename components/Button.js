@@ -1,4 +1,4 @@
-import { StyleSheet, View, Pressable, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Pressable, Text, Dimensions, Platform } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
@@ -83,7 +83,7 @@ export default function Button({ label, theme, direction }) {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: windowWidth * 0.9, // Set the width to 90% to fit the screen better
+    width: Platform.OS === 'web' ? windowWidth * 0.3:windowWidth*0.9, // Set the width to 90% to fit the screen better
     height: 68,
     marginHorizontal: 20,
     marginVertical: 10,
