@@ -257,7 +257,7 @@ const ViewOrderAndEdit = () => {
         )}
         {direction == "Paid" && (
           <Text style={styles.headerText}>
-            Total Not Delivered Alcohol Quantities
+            Total Paid Alcohol Quantities
           </Text>
         )}
         {direction == "Delivered" && (
