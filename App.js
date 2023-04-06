@@ -23,7 +23,7 @@ function HomeScreen() {
         />
         <Button
           theme="view"
-          label="View Order"
+          label="View/Edit Order"
           direction="View Order"
         />
       </ScrollView>
