@@ -54,7 +54,7 @@ const ViewOrderAndEdit = () => {
   );
   const [direction, setDirection] = useState("All");
 
-  const filterOptions = ["All", "Paid", "Unpaid", "Delivered"];
+  const filterOptions = ["All", "Unpaid", "Paid", "Delivered"];
   const [pickerModalVisible, setPickerModalVisible] = useState(false);
 
   const windowWidth = Dimensions.get("window").width;
