@@ -22,8 +22,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { CommonActions } from "@react-navigation/native";
-import showNotification from "./NotificationHandler";
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 
