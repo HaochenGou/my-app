@@ -224,7 +224,10 @@ const OrderInput = ({ navigation, route }) => {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{ name: "Hawke Prohibition Distilleries" }, { name: "Input Order" }],
+            routes: [
+              { name: "Hawke Prohibition Distilleries" },
+              { name: "Input Order" },
+            ],
           })
         );
       }
@@ -256,7 +259,10 @@ const OrderInput = ({ navigation, route }) => {
     navigation.dispatch(
       CommonActions.reset({
         index: 1,
-        routes: [{ name: "Hawke Prohibition Distilleries" }, { name: "Input Order" }],
+        routes: [
+          { name: "Hawke Prohibition Distilleries" },
+          { name: "Input Order" },
+        ],
       })
     );
   };
