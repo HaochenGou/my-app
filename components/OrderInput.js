@@ -287,12 +287,6 @@ const OrderInput = ({ navigation, route }) => {
             isNumberInput
           />
           <Field
-            label="Orange Float"
-            onChangeText={(text) => setOrangeFloatQuantity(parseInt(text) || 0)}
-            isNumberInput
-          />
-
-          <Field
             label="SugarLips Vodka"
             onChangeText={(text) =>
               setSugarLipsVodkaQuantity(parseInt(text) || 0)
@@ -313,6 +307,12 @@ const OrderInput = ({ navigation, route }) => {
             }
             isNumberInput
           />
+          <Field
+            label="Thick & Dirty Orange Float"
+            onChangeText={(text) => setOrangeFloatQuantity(parseInt(text) || 0)}
+            isNumberInput
+          />
+
           <Field
             label="Thick & Dirty Signature Cream"
             onChangeText={(text) =>
