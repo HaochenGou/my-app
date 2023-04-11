@@ -318,7 +318,6 @@ const OrderInput = ({ navigation, route }) => {
             onChangeText={(text) => setOrangeFloatQuantity(parseInt(text) || 0)}
             isNumberInput
           />
-
           <Field
             label="Thick & Dirty Signature Cream"
             onChangeText={(text) =>
