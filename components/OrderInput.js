@@ -112,7 +112,7 @@ const OrderInput = ({ navigation, route }) => {
     }
   }, [orderId]);
 
-  const sendPushNotification = async (expoPushToken) => {
+  async function sendPushNotification(expoPushToken) {
     const message = {
       to: expoPushToken,
       sound: "default",
@@ -129,9 +129,9 @@ const OrderInput = ({ navigation, route }) => {
       },
       body: JSON.stringify(message),
     });
-  };
+  }
 
-  const registerForPushNotificationsAsync = async () => {
+  async function registerForPushNotificationsAsync() {
     let token;
 
     if (Platform.OS === "android") {
@@ -160,7 +160,9 @@ const OrderInput = ({ navigation, route }) => {
     } else {
       alert("Must use physical device for Push Notifications");
     }
-  };
+
+    return token;
+  }
 
   const fetchDocument = async (orderId) => {
     try {
