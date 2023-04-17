@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Dimensions,
   Platform,
+  TextInput,
 } from "react-native";
 import {
   getFirestore,
