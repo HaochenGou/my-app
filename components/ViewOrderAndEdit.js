@@ -274,7 +274,7 @@ const ViewOrderAndEdit = () => {
           <View style={styles.alcoholQuantityContainer} key={label}>
             <Text style={styles.alcoholLabel}>{label}:</Text>
             <Text style={styles.alcoholQuantity}>{quantity}</Text>
-          </View>
+          </View>   
         ))}
         <FlatList
           data={unpaidOrders}
@@ -490,7 +490,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10,
   },
 
   pickerModalContainer: {
@@ -508,7 +507,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     padding: 15,
     borderRadius: 5,
-    marginBottom: 10,
     borderColor: "#ddd",
     borderWidth: 1,
   },
@@ -601,11 +599,10 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
   },
   alcoholQuantityContainer: {
     flexDirection: "row",
-    marginBottom: 5,
+    fontSize: 16,
   },
   alcoholLabel: {
     fontWeight: "bold",
