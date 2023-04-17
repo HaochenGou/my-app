@@ -162,6 +162,12 @@ const ViewOrderAndEdit = () => {
       await updateDoc(orderRef, {
         isPaid: selectedOrder.isPaid,
         isDelivered: selectedOrder.isDelivered,
+        orderAddress: selectedOrder.orderAddress,
+        orderNumber: selectedOrder.orderNumber,
+        orderName: selectedOrder.orderName,
+        orderDate: selectedOrder.orderDate,
+        note: selectedOrder.note,
+        orderLicense: selectedOrder.orderLicense,
       });
       alert("Order updated successfully!");
       setSelectedOrder(null);
@@ -257,9 +263,7 @@ const ViewOrderAndEdit = () => {
           <Text style={styles.headerText}>Total Unpaid Alcohol Quantities</Text>
         )}
         {direction == "Paid" && (
-          <Text style={styles.headerText}>
-            Total Paid Alcohol Quantities
-          </Text>
+          <Text style={styles.headerText}>Total Paid Alcohol Quantities</Text>
         )}
         {direction == "Delivered" && (
           <Text style={styles.headerText}>
@@ -294,23 +298,71 @@ const ViewOrderAndEdit = () => {
                 {selectedOrder && (
                   <>
                     <Text style={styles.label}>Order Address:</Text>
-                    <Text style={styles.value}>
-                      {selectedOrder.orderAddress}
-                    </Text>
+                    <TextInput
+                      style={styles.value}
+                      value={selectedOrder.orderAddress}
+                      onChangeText={(text) =>
+                        setSelectedOrder({
+                          ...selectedOrder,
+                          orderAddress: text,
+                        })
+                      }
+                    />
                     <Text style={styles.label}>Order Name:</Text>
-                    <Text style={styles.value}>{selectedOrder.orderName}</Text>
+                    <TextInput
+                      style={styles.value}
+                      value={selectedOrder.orderName}
+                      onChangeText={(text) =>
+                        setSelectedOrder({
+                          ...selectedOrder,
+                          orderName: text,
+                        })
+                      }
+                    />
                     <Text style={styles.label}>Invoice Number:</Text>
-                    <Text style={styles.value}>
-                      {selectedOrder.orderNumber}
-                    </Text>
+                    <TextInput
+                      style={styles.value}
+                      value={selectedOrder.orderNumber}
+                      onChangeText={(text) =>
+                        setSelectedOrder({
+                          ...selectedOrder,
+                          orderNumber: text,
+                        })
+                      }
+                    />
                     <Text style={styles.label}>Order Date:</Text>
-                    <Text style={styles.value}>{selectedOrder.orderDate}</Text>
+                    <TextInput
+                      style={styles.value}
+                      value={selectedOrder.orderDate}
+                      onChangeText={(text) =>
+                        setSelectedOrder({
+                          ...selectedOrder,
+                          orderDate: text,
+                        })
+                      }
+                    />
                     <Text style={styles.label}>License Number:</Text>
-                    <Text style={styles.value}>
-                      {selectedOrder.orderLicense}
-                    </Text>
+                    <TextInput
+                      style={styles.value}
+                      value={selectedOrder.orderLicense}
+                      onChangeText={(text) =>
+                        setSelectedOrder({
+                          ...selectedOrder,
+                          orderLicense: text,
+                        })
+                      }
+                    />
                     <Text style={styles.label}>Note:</Text>
-                    <Text style={styles.value}>{selectedOrder.note}</Text>
+                    <TextInput
+                      style={styles.value}
+                      value={selectedOrder.note}
+                      onChangeText={(text) =>
+                        setSelectedOrder({
+                          ...selectedOrder,
+                          note: text,
+                        })
+                      }
+                    />
 
                     <Text style={styles.label}>Alcohol Order:</Text>
                     <View>
