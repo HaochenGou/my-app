@@ -83,23 +83,23 @@ const ViewOrderAndEdit = () => {
           collection(db, "Orders"),
           where("isPaid", "==", false),
           where("isDelivered", "==", false),
-          orderBy("orderNumber", "asc")
+          orderBy("orderNumber", "desc")
         );
       } else if (direction == "All") {
-        q = query(collection(db, "Orders"), orderBy("orderNumber", "asc"));
+        q = query(collection(db, "Orders"), orderBy("orderNumber", "desc"));
       } else if (direction == "Paid") {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", true),
           where("isDelivered", "==", false),
-          orderBy("orderNumber", "asc")
+          orderBy("orderNumber", "desc")
         );
       } else if (direction == "Delivered") {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", true),
           where("isDelivered", "==", true),
-          orderBy("orderNumber", "asc")
+          orderBy("orderNumber", "desc")
         );
       }
       const querySnapshot = await getDocs(q);
@@ -219,6 +219,16 @@ const ViewOrderAndEdit = () => {
     }
   };
 
+  const getBackgroundColor = (item) => {
+    if (item.isPaid && item.isDelivered) {
+      return "lightgreen";
+    } else if (item.isPaid && !item.isDelivered) {
+      return "yellow";
+    } else {
+      return "red";
+    }
+  };
+
   const fetchAlcoholItems = async (orderId) => {
     try {
       const alcoholRef = collection(db, "Orders", orderId, "alcohol");
@@ -274,14 +284,17 @@ const ViewOrderAndEdit = () => {
           <View style={styles.alcoholQuantityContainer} key={label}>
             <Text style={styles.alcoholLabel}>{label}:</Text>
             <Text style={styles.alcoholQuantity}>{quantity}</Text>
-          </View>   
+          </View>
         ))}
         <FlatList
           data={unpaidOrders}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={styles.orderContainer}
+              style={[
+                styles.orderContainer,
+                { backgroundColor: getBackgroundColor(item) },
+              ]}
               onPress={() => handleShowOrderDetails(item)}
             >
               <Text style={styles.orderText}>
@@ -504,7 +517,6 @@ const styles = StyleSheet.create({
   },
 
   orderContainer: {
-    backgroundColor: "#f5f5f5",
     padding: 15,
     borderRadius: 5,
     borderColor: "#ddd",
