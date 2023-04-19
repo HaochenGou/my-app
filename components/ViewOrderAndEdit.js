@@ -82,7 +82,6 @@ const ViewOrderAndEdit = () => {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", false),
-          where("isDelivered", "==", false),
           orderBy("orderNumber", "desc")
         );
       } else if (direction == "All") {
@@ -91,13 +90,11 @@ const ViewOrderAndEdit = () => {
         q = query(
           collection(db, "Orders"),
           where("isPaid", "==", true),
-          where("isDelivered", "==", false),
           orderBy("orderNumber", "desc")
         );
       } else if (direction == "Delivered") {
         q = query(
           collection(db, "Orders"),
-          where("isPaid", "==", true),
           where("isDelivered", "==", true),
           orderBy("orderNumber", "desc")
         );
